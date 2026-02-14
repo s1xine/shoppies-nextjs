@@ -1,21 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { Search, ShoppingCart, X, Menu } from "lucide-react";
+import { Search, ShoppingCart, X, Menu, Heart } from "lucide-react";
 import {
   UserButton,
   SignedIn,
   SignedOut,
   SignInButton,
   SignUpButton,
+  UserAvatar,
 } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "./ui/button";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { useCartStore } from "@/store/cartStore";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { useUser } from "@clerk/nextjs";
 
 export default function Navbar() {
+  const cartItems = useCartStore((state) => state.cartItems);
+  const { user, isLoaded } = useUser();
+
   const [openSearch, setOpenSearch] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -29,9 +36,11 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/categories", label: "Categories" },
+    { href: "/products", label: "Products" },
     { href: "/contact", label: "Contact" },
   ];
+
+  if (!isLoaded) return null;
 
   return (
     <>
@@ -40,10 +49,10 @@ export default function Navbar() {
         <div className=" flex justify-center transition-all duration-500 ease-[cubic-bezier(.16,1,.3,1)] ">
           <div
             className={`
-            flex items-center justify-between will-change-transform 
+            flex items-center justify-between will-change-transform
           ${
             scrolled
-              ? "mt-4 w-[92%] max-w-7xl px-6 h-14 rounded-full backdrop-blur-xl bg-white/70 dark:bg-black/50 border border-white/20 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-500 ease-[cubic-bezier(.16,1,.3,1)] "
+              ? "mt-4 w-[92%] max-w-7xl px-6 h-18 rounded-full backdrop-blur-xl bg-white/70 dark:bg-black/50 border border-white/20 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-500 ease-[cubic-bezier(.16,1,.3,1)] "
               : "w-full px-10 h-16 bg-white dark:bg-black border-b transition-all duration-100 ease-linear"
           }
         `}
@@ -58,6 +67,7 @@ export default function Navbar() {
                 alt="site-logo"
                 width={200}
                 height={50}
+                className="w-full pt-2"
               />
             </Link>
 
@@ -136,12 +146,28 @@ export default function Navbar() {
                 </SignedOut>
 
                 <SignedIn>
-                  <Link href="/cart" className="relative">
-                    <ShoppingCart size={20} />
-                    <span className="absolute -top-2 -right-2 bg-black text-white dark:bg-white dark:text-black text-[10px] px-1.5 py-0.5 rounded-full">
-                      2
-                    </span>
-                  </Link>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Link href="/wishlist" className="relative">
+                        <Heart className="" size={20} />
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>Wishlist</TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Link href="/cart" className="relative">
+                        <ShoppingCart size={20} />
+                        {cartItems.length > 0 && (
+                          <span className="absolute -top-2 -right-2 bg-black text-white dark:bg-white dark:text-black text-[10px] px-1.5 py-0.5 rounded-full">
+                            {cartItems.length}
+                          </span>
+                        )}
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>Cart</TooltipContent>
+                  </Tooltip>
 
                   <UserButton />
                 </SignedIn>
@@ -209,10 +235,19 @@ export default function Navbar() {
               </SignedOut>
 
               <SignedIn>
+                <Link href="/wishlist" onClick={() => setMobileOpen(false)}>
+                  Wishlist
+                </Link>
+
                 <Link href="/cart" onClick={() => setMobileOpen(false)}>
                   Cart
                 </Link>
-                <UserButton afterSignOutUrl="/" />
+
+                {user && (
+                  <div className="flex gap-2">
+                    <UserButton /> {user?.fullName}
+                  </div>
+                )}
               </SignedIn>
             </div>
           </div>

@@ -1,11 +1,13 @@
-import { ClerkProvider } from "@clerk/nextjs";
-import React from "react";
+import Navbar from "@/components/navbar";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
+    <>
+      {/* NAVBAR */}
+      <Navbar />
+
       <main>{children}</main>
-    </ClerkProvider>
+    </>
   );
 }
 

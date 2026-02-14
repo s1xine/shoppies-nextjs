@@ -1,16 +1,12 @@
-import CTA from "@/components/CTA";
-import Features from "@/components/Features";
-import Footer from "@/components/Footer";
-import HeroSection from "@/components/HeroSection";
-import Navbar from "@/components/Navbar";
-import Products from "@/components/Products";
+import CTA from "@/components/cta";
+import Features from "@/components/features";
+import Footer from "@/components/foorter";
+import HeroSection from "@/components/hero-section";
+import ProductsGrid from "@/components/products-grid";
 
 export default function Page() {
   return (
     <main className="min-h-screen">
-      {/* NAVBAR */}
-      <Navbar />
-
       {/* HERO */}
       <HeroSection />
 
@@ -18,7 +14,12 @@ export default function Page() {
       <Features />
 
       {/* PRODUCTS */}
-      <Products />
+      <section className="container mx-auto px-6 py-10 min-h-screen">
+        <h2 className="text-6xl font-semibold text-center mt-16 mb-12">
+          Products
+        </h2>
+        <ProductsGrid />
+      </section>
 
       {/* CTA */}
       <CTA />
