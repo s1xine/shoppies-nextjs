@@ -2,16 +2,14 @@
 
 import PageHeader from "@/components/page-header";
 import { useCartStore } from "@/store/cartStore";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
 import { redirect } from "next/navigation";
+import CartItemCard from "@/components/card-item-card";
+import CartTotalCard from "@/components/card-total-card";
 
 export default function CartPage() {
   const cartItems = useCartStore((state) => state.cartItems);
   const getProduct = useCartStore((state) => state.getProduct);
-  const addToCart = useCartStore((state) => state.addToCart);
-  const removeFromCart = useCartStore((state) => state.removeFromCart);
 
   // subtotal
   const subtotal = cartItems.reduce((total, item) => {
@@ -24,115 +22,54 @@ export default function CartPage() {
     <>
       <PageHeader title="Cart" />
 
-      <section className="pb-24">
+      <section className="pb-32 pt-6 max-w-7xl mx-auto px-6">
         {cartItems.length === 0 ? (
           /* EMPTY STATE */
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <h2 className="text-2xl font-semibold">Your cart is empty</h2>
-            <p className="text-muted-foreground mt-2">
-              Looks like you haven’t added anything yet.
+            <div className="text-6xl mb-6">🛒</div>
+
+            <h2 className="text-3xl font-semibold tracking-tight">
+              Your cart feels lonely
+            </h2>
+
+            <p className="text-muted-foreground mt-3 max-w-md">
+              Looks like you haven&apos;t added anything yet. Start exploring
+              our premium products.
             </p>
 
             <Button
               onClick={() => redirect("/products")}
-              className="mt-6 rounded-full px-8"
+              className="mt-8 rounded-2xl px-8 h-12 text-base"
             >
-              Continue Shopping
+              Explore Products
             </Button>
           </div>
         ) : (
-          <div className="grid lg:grid-cols-3 gap-12">
-            {/* LEFT — ITEMS */}
-            <div className="lg:col-span-2 space-y-6">
+          <div className="grid lg:grid-cols-3 gap-14 mt-10 ">
+            {/* LEFT */}
+
+            <div className="lg:col-span-2 space-y-6 order-2 lg:order-1">
+              <h1 className="text-3xl lg:hidden">Cart Items</h1>
+              {/* ITEM LIST */}
               {cartItems.map((item) => {
                 const product = getProduct(item.id);
                 if (!product) return null;
 
                 return (
-                  <div
-                    key={item.id}
-                    className="flex gap-6 p-6 rounded-2xl border bg-card/60 backdrop-blur-xl"
-                  >
-                    {/* image */}
-                    <div className="relative w-24 h-24 shrink-0">
-                      <Image
-                        src={product.image}
-                        alt={product.title}
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-
-                    {/* info */}
-                    <div className="flex-1">
-                      <h3 className="font-medium line-clamp-2">
-                        {product.title}
-                      </h3>
-
-                      <p className="text-muted-foreground mt-1">
-                        ₹{Math.round(product.price * 85)}
-                      </p>
-
-                      {/* quantity */}
-                      <div className="flex items-center gap-3 mt-4">
-                        <span className="text-sm text-muted-foreground">
-                          Qty:
-                        </span>
-
-                        <div className="flex items-center gap-2">
-                          <Button
-                            size="icon"
-                            variant="outline"
-                            onClick={() => addToCart(item.id)}
-                          >
-                            +
-                          </Button>
-
-                          <span className="w-6 text-center">
-                            {item.quantity}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* total */}
-                    <div className="text-right flex flex-col justify-between">
-                      <p className="font-semibold">
-                        ₹{Math.round(product.price * 85 * item.quantity)}
-                      </p>
-
-                      <Trash2
-                        onClick={() => removeFromCart(product.id)}
-                        className="w-4 h-4 opacity-50 cursor-pointer hover:opacity-100"
-                      />
-                    </div>
-                  </div>
+                  <CartItemCard
+                    key={product.id}
+                    item={item}
+                    product={product}
+                  />
                 );
               })}
             </div>
 
-            {/* RIGHT — SUMMARY */}
-            <div className="h-fit sticky top-24 rounded-3xl border bg-card/60 backdrop-blur-xl p-8 space-y-6">
-              <h3 className="text-xl font-semibold">Order Summary</h3>
+            {/* RIGHT */}
+            <div className=" order-1 lg:order-2">
+              <h1 className="text-3xl mb-6 lg:hidden">Total</h1>
 
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Subtotal</span>
-                <span>₹{Math.round(subtotal)}</span>
-              </div>
-
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Shipping</span>
-                <span>Free</span>
-              </div>
-
-              <div className="border-t pt-4 flex justify-between font-semibold">
-                <span>Total</span>
-                <span>₹{Math.round(subtotal)}</span>
-              </div>
-
-              <Button className="w-full rounded-full py-6 text-base">
-                Checkout
-              </Button>
+              <CartTotalCard subtotal={subtotal} />
             </div>
           </div>
         )}

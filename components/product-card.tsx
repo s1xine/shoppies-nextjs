@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Heart, ShoppingCart } from "lucide-react";
+import { Check, Heart, ShoppingCart } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { useCartStore } from "@/store/cartStore";
@@ -16,6 +16,9 @@ const ProductCard = ({ product }: { product: Product }) => {
   const addToCart = useCartStore((state) => state.addToCart);
   const toggleWishlist = useCartStore((state) => state.toggleWishlist);
   const wishlist = useCartStore((state) => state.wishlist);
+  const cartItems = useCartStore((state) => state.cartItems);
+  const isInCart = cartItems.some((item) => item.id === product.id);
+  const isWishlisted = wishlist.includes(product.id);
 
   return (
     <Card
@@ -27,11 +30,14 @@ const ProductCard = ({ product }: { product: Product }) => {
       <Button
         variant="link"
         onClick={() => toggleWishlist(product.id)}
-        className="absolute top-3 right-3 z-20 opacity-0
-              group-hover:opacity-100 transition"
+        className={`absolute top-4 right-0 z-20 
+            ${isWishlisted ? "opacity-100" : "opacity-0"}
+              group-hover:opacity-100 transition `}
       >
-        <div className="bg-black/60 backdrop-blur-md p-2 rounded-full">
-          {wishlist.includes(product.id) ? (
+        <div
+          className={` ${isWishlisted ? "bg-red-500/20" : "bg-red-500/60"} dark:bg-black/60 backdrop-blur-md p-2 rounded-full cursor-pointer`}
+        >
+          {isWishlisted ? (
             <Heart className="w-4 h-4 text-red-500 fill-red-500 " />
           ) : (
             <Heart className="w-4 h-4 text-white " />
@@ -40,7 +46,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       </Button>
 
       {/* 🖼 image */}
-      <div className="relative w-full">
+      <div className="relative w-full cursor-pointer">
         <Image
           src={product.image}
           alt={product.title}
@@ -51,7 +57,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       </div>
 
       {/* info */}
-      <div className=" flex items-center">
+      <div className=" flex items-center justify-between">
         <div className="p-4">
           <h3 className="text-sm font-medium line-clamp-2">{product.title}</h3>
 
@@ -63,11 +69,24 @@ const ProductCard = ({ product }: { product: Product }) => {
         <Button
           variant="link"
           onClick={() => addToCart(product.id)}
-          className=" bottom-3 right-3 opacity-0
-              group-hover:opacity-100 transition"
+          disabled={isInCart}
+          className="bottom-3 right-3 opacity-0 group-hover:opacity-100 transition"
         >
-          <div className="bg-primary text-primary-foreground p-2 rounded-full shadow-lg">
-            <ShoppingCart className="w-4 h-4" />
+          <div
+            className={`
+          p-2 rounded-full cursor-pointer shadow-lg transition
+          ${
+            isInCart
+              ? "bg-green-600 text-white"
+              : "bg-primary text-primary-foreground"
+          }
+        `}
+          >
+            {isInCart ? (
+              <Check className="w-4 h-4" />
+            ) : (
+              <ShoppingCart className="w-4 h-4" />
+            )}
           </div>
         </Button>
       </div>

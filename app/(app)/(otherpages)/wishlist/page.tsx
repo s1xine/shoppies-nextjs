@@ -2,16 +2,14 @@
 
 import PageHeader from "@/components/page-header";
 import { useCartStore } from "@/store/cartStore";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Heart, ShoppingCart } from "lucide-react";
 import { redirect } from "next/navigation";
+import WishlistCard from "@/components/wishlist-card";
+import { HeartCrack } from "lucide-react";
 
 export default function WishlistPage() {
   const wishlist = useCartStore((state) => state.wishlist);
   const getProduct = useCartStore((state) => state.getProduct);
-  const toggleWishlist = useCartStore((state) => state.toggleWishlist);
-  const addToCart = useCartStore((state) => state.addToCart);
 
   const wishlistProducts = wishlist.map((id) => getProduct(id)).filter(Boolean);
 
@@ -19,10 +17,11 @@ export default function WishlistPage() {
     <>
       <PageHeader title="My Wishlist" />
 
-      <section className="pb-24">
+      <section className="pb-32 pt-6 max-w-7xl mx-auto px-6">
         {wishlistProducts.length === 0 ? (
           /* EMPTY */
           <div className="flex flex-col items-center justify-center py-24 text-center">
+            <HeartCrack className="w-30 h-30 clas" />
             <h2 className="text-2xl font-semibold">Your wishlist is empty</h2>
             <p className="text-muted-foreground mt-2">
               Save items you love to your wishlist.
@@ -30,7 +29,7 @@ export default function WishlistPage() {
 
             <Button
               onClick={() => redirect("/products")}
-              className="mt-6 rounded-full px-8"
+              className="mt-8 rounded-2xl px-8 h-12 text-base"
             >
               Explore Products
             </Button>
@@ -40,61 +39,7 @@ export default function WishlistPage() {
             {wishlistProducts.map((product) => {
               if (!product) return null;
 
-              return (
-                <div
-                  key={product.id}
-                  className="relative group rounded-2xl border bg-card/60 backdrop-blur-xl p-6 hover:shadow-xl transition"
-                >
-                  {/* remove wishlist */}
-                  <button
-                    onClick={() => toggleWishlist(product.id)}
-                    className="absolute top-4 right-4"
-                  >
-                    <Heart className="w-5 h-5 fill-red-500 text-red-500" />
-                  </button>
-
-                  {/* image */}
-                  <div className="relative h-40 mb-4">
-                    <Image
-                      src={product.image}
-                      alt={product.title}
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-
-                  {/* info */}
-                  <h3 className="text-sm font-medium line-clamp-2">
-                    {product.title}
-                  </h3>
-
-                  <p className="text-muted-foreground mt-1">
-                    ₹{Math.round(product.price * 85)}
-                  </p>
-
-                  {/* actions */}
-                  <div className="flex gap-3 mt-4">
-                    <Button
-                      className="flex-1 rounded-full"
-                      onClick={() => {
-                        addToCart(product.id);
-                        toggleWishlist(product.id);
-                      }}
-                    >
-                      <ShoppingCart className="w-4 h-4 mr-2" />
-                      Add
-                    </Button>
-
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => toggleWishlist(product.id)}
-                    >
-                      ✕
-                    </Button>
-                  </div>
-                </div>
-              );
+              return <WishlistCard product={product} key={product.id} />;
             })}
           </div>
         )}
