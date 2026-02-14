@@ -6,7 +6,7 @@ const ProductsGrid = async () => {
   const products = await getProducts(); // SSR fetch here
 
   return (
-    <div className="mt-12">
+    <div className="mt-12 pb-20">
       {/* hydrate zustand globally */}
       <ProductHydrator products={products} />
 
