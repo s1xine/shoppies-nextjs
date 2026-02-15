@@ -10,11 +10,14 @@ export type Product = {
 };
 
 export const getProducts = cache(async (): Promise<Product[]> => {
-  const res = await fetch("https://fakestoreapi.com/products", {
-    next: { revalidate: 300 }, // cache 5 min
-  });
+  try {
+    const res = await fetch("https://fakestoreapi.com/products", {
+      next: { revalidate: 300 },
+    });
 
-  if (!res.ok) throw new Error("Failed to fetch products");
-
-  return res.json();
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
 });
