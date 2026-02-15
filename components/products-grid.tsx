@@ -5,10 +5,6 @@ import ProductHydrator from "./ProductHydrator";
 const ProductsGrid = async () => {
   const products = await getProducts(); // SSR fetch here
 
-  if (!products || products.length === 0) {
-    return <p className="text-center text-gray-500">No products found.</p>;
-  }
-
   return (
     <div className="mt-12 pb-20">
       {/* hydrate zustand globally */}
