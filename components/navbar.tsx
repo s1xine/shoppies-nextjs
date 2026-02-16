@@ -8,7 +8,6 @@ import {
   SignedOut,
   SignInButton,
   SignUpButton,
-  UserAvatar,
 } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
@@ -60,14 +59,15 @@ export default function Navbar() {
             {/* LOGO */}
             <Link
               href="/"
-              className={`${!scrolled && "md:mx-auto"} font-bold text-lg`}
+              className={`${!scrolled && "md:mx-auto"} flex items-center shrink-0`}
             >
               <Image
                 src="/Shoppies_logo.png"
-                alt="site-logo"
-                width={200}
-                height={50}
-                className="w-full pt-2"
+                alt="shoppies-logo"
+                width={100}
+                height={100}
+                priority
+                className="h-10 w-auto object-contain"
               />
             </Link>
 

@@ -4,6 +4,7 @@ import { Check, Heart, ShoppingCart } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { useCartStore } from "@/store/cartStore";
+import { useUser, useClerk } from "@clerk/nextjs";
 
 type Product = {
   id: number;
@@ -20,6 +21,9 @@ const ProductCard = ({ product }: { product: Product }) => {
   const isInCart = cartItems.some((item) => item.id === product.id);
   const isWishlisted = wishlist.includes(product.id);
 
+  const { isSignedIn } = useUser();
+  const { openSignIn } = useClerk();
+
   return (
     <Card
       key={product.id}
@@ -29,7 +33,13 @@ const ProductCard = ({ product }: { product: Product }) => {
       {/* Whishlist button */}
       <Button
         variant="link"
-        onClick={() => toggleWishlist(product.id)}
+        onClick={() => {
+          if (!isSignedIn) {
+            openSignIn(); // opens clerk modal
+            return;
+          }
+          toggleWishlist(product.id);
+        }}
         className={`absolute top-4 right-0 z-20 
             ${isWishlisted ? "opacity-100" : "opacity-0"}
               group-hover:opacity-100 transition `}
@@ -68,7 +78,13 @@ const ProductCard = ({ product }: { product: Product }) => {
 
         <Button
           variant="link"
-          onClick={() => addToCart(product.id)}
+          onClick={() => {
+            if (!isSignedIn) {
+              openSignIn();
+              return;
+            }
+            addToCart(product.id);
+          }}
           disabled={isInCart}
           className="bottom-3 right-3 opacity-0 group-hover:opacity-100 transition"
         >
