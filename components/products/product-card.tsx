@@ -1,17 +1,13 @@
 "use client";
 import Image from "next/image";
 import { Check, Heart, ShoppingCart } from "lucide-react";
-import { Card } from "./ui/card";
-import { Button } from "./ui/button";
+
 import { useCartStore } from "@/store/cartStore";
 import { useUser, useClerk } from "@clerk/nextjs";
-
-type Product = {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-};
+import { useRouter } from "next/navigation";
+import { Product } from "@/types/product";
+import { Card } from "../ui/card";
+import { Button } from "../ui/button";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const addToCart = useCartStore((state) => state.addToCart);
@@ -23,6 +19,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 
   const { isSignedIn } = useUser();
   const { openSignIn } = useClerk();
+  const router = useRouter();
 
   return (
     <Card
@@ -58,10 +55,11 @@ const ProductCard = ({ product }: { product: Product }) => {
       {/* 🖼 image */}
       <div className="relative w-full cursor-pointer">
         <Image
-          src={product.image}
+          src={product.images[0]}
           alt={product.title}
           width={500}
           height={500}
+          onClick={() => router.push(`/products/${product.slug}`)}
           className="w-full h-auto object-contain p-6 group-hover:scale-105 transition duration-300"
         />
       </div>
@@ -69,7 +67,12 @@ const ProductCard = ({ product }: { product: Product }) => {
       {/* info */}
       <div className=" flex items-center justify-between">
         <div className="p-4">
-          <h3 className="text-sm font-medium line-clamp-2">{product.title}</h3>
+          <h3
+            className="text-sm font-medium line-clamp-2 cursor-pointer"
+            onClick={() => router.push(`/products/${product.slug}`)}
+          >
+            {product.title}
+          </h3>
 
           <p className="text-sm text-muted-foreground mt-1">
             ₹{Math.round(product.price * 85)}

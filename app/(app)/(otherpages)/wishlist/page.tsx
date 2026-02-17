@@ -3,11 +3,12 @@
 import PageHeader from "@/components/page-header";
 import { useCartStore } from "@/store/cartStore";
 import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
 import WishlistCard from "@/components/wishlist-card";
 import { HeartCrack } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function WishlistPage() {
+  const router = useRouter();
   const wishlist = useCartStore((state) => state.wishlist);
   const getProduct = useCartStore((state) => state.getProduct);
 
@@ -28,7 +29,7 @@ export default function WishlistPage() {
             </p>
 
             <Button
-              onClick={() => redirect("/products")}
+              onClick={() => router.push("/products")}
               className="mt-8 rounded-2xl px-8 h-12 text-base"
             >
               Explore Products

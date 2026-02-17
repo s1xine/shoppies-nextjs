@@ -1,7 +1,8 @@
-import { Product, useCartStore } from "@/store/cartStore";
+import { useCartStore } from "@/store/cartStore";
 import { Heart, ShoppingCart, X } from "lucide-react";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import { Product } from "@/types/product";
 
 const WishlistCard = ({ product }: { product: Product }) => {
   const toggleWishlist = useCartStore((state) => state.toggleWishlist);
@@ -23,7 +24,7 @@ const WishlistCard = ({ product }: { product: Product }) => {
       {/* image */}
       <div className="relative h-40 mb-4">
         <Image
-          src={product.image}
+          src={product.images[0]}
           alt={product.title}
           fill
           className="object-contain"

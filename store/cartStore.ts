@@ -1,17 +1,6 @@
+import { CartItem, Product } from "@/types/product";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-export type Product = {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-};
-
-export type CartItem = {
-  id: number;
-  quantity: number;
-};
 
 type CartStore = {
   cartItems: CartItem[];
@@ -67,7 +56,7 @@ export const useCartStore = create<CartStore>()(
           ),
         })),
 
-      // 🔥 decrement qty
+      //  decrement qty
       decrementQty: (id) =>
         set((state) => {
           const item = state.cartItems.find((i) => i.id === id);
@@ -82,8 +71,8 @@ export const useCartStore = create<CartStore>()(
 
           // else decrease
           return {
-            cartItems: state.cartItems.map((i) =>
-              i.id === id ? { ...i, quantity: i.quantity - 1 } : i,
+            cartItems: state.cartItems.map((item) =>
+              item.id === id ? { ...item, quantity: item.quantity - 1 } : item,
             ),
           };
         }),
@@ -97,12 +86,12 @@ export const useCartStore = create<CartStore>()(
       toggleWishlist: (id) =>
         set((state) => ({
           wishlist: state.wishlist.includes(id)
-            ? state.wishlist.filter((i) => i !== id)
+            ? state.wishlist.filter((item) => item !== id)
             : [...state.wishlist, id],
         })),
 
-      getProduct: (id) => {
-        return get().products.find((p) => p.id === id);
+      getProduct: (id: number) => {
+        return get().products.find((product) => product.id === id);
       },
     }),
     {

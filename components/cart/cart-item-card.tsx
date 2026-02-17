@@ -1,10 +1,11 @@
 "use client";
 
-import { Button } from "./ui/button";
 import { Card } from "@/components/ui/card";
 import { Trash2, Plus, Minus } from "lucide-react";
 import Image from "next/image";
-import { CartItem, Product, useCartStore } from "@/store/cartStore";
+import { useCartStore } from "@/store/cartStore";
+import { CartItem, Product } from "@/types/product";
+import { Button } from "../ui/button";
 
 const CartItemCard = ({
   item,
@@ -23,7 +24,7 @@ const CartItemCard = ({
         {/* IMAGE */}
         <div className="relative w-28 h-28 rounded-2xl overflow-hidden bg-muted/40">
           <Image
-            src={product.image}
+            src={product.images[0]}
             alt={product.title}
             fill
             className="object-contain p-3 group-hover:scale-105 transition"

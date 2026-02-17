@@ -3,13 +3,14 @@
 import PageHeader from "@/components/page-header";
 import { useCartStore } from "@/store/cartStore";
 import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
-import CartItemCard from "@/components/card-item-card";
-import CartTotalCard from "@/components/card-total-card";
+import { useRouter } from "next/navigation";
+import CartItemCard from "@/components/cart/cart-item-card";
+import CartTotalCard from "@/components/cart/cart-total-card";
 
 export default function CartPage() {
   const cartItems = useCartStore((state) => state.cartItems);
   const getProduct = useCartStore((state) => state.getProduct);
+  const router = useRouter();
 
   // subtotal
   const subtotal = cartItems.reduce((total, item) => {
@@ -38,7 +39,7 @@ export default function CartPage() {
             </p>
 
             <Button
-              onClick={() => redirect("/products")}
+              onClick={() => router.push("/products")}
               className="mt-8 rounded-2xl px-8 h-12 text-base"
             >
               Explore Products

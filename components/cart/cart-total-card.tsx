@@ -1,6 +1,6 @@
-import { Button } from "./ui/button";
 import { Card } from "@/components/ui/card";
 import { Lock } from "lucide-react";
+import { Button } from "../ui/button";
 
 const CartTotalCard = ({ subtotal }: { subtotal: number }) => {
   return (

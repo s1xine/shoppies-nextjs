@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { motion } from "framer-motion";
 import {
   Carousel,
@@ -12,22 +11,16 @@ import {
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
-
-type HeroProduct = {
-  title: string;
-  subtitle: string;
-  price: string;
-  image: string;
-};
+import { Product } from "@/types/product";
+import { useRef } from "react";
+import currencyIndianRupee from "@/utils/currency";
 
 export default function HeroCarousel({
-  products,
+  heroProducts,
 }: {
-  products: HeroProduct[];
+  heroProducts: Product[];
 }) {
-  const plugin = React.useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true }),
-  );
+  const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: true }));
 
   return (
     <Carousel
@@ -38,7 +31,7 @@ export default function HeroCarousel({
       className="w-full"
     >
       <CarouselContent className=" flex items-center">
-        {products.map((product, index) => (
+        {heroProducts.map((product, index) => (
           <CarouselItem key={index}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center px-4 md:px-10">
               {/* LEFT TEXT */}
@@ -53,11 +46,11 @@ export default function HeroCarousel({
                 </h1>
 
                 <p className="text-lg text-gray-400 max-w-md">
-                  {product.subtitle}
+                  {product.description}
                 </p>
 
                 <p className="text-xl font-medium text-gray-200">
-                  {product.price}
+                  {currencyIndianRupee(product.price)}
                 </p>
 
                 <div className="flex gap-4 pt-6">
@@ -81,15 +74,15 @@ export default function HeroCarousel({
                 transition={{ duration: 0.8 }}
                 className="relative flex justify-center"
               >
-                <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent blur-3xl rounded-full" />
+                <div className="absolute inset-0 bg-linear-to-tr from-white/10 to-transparent blur-3xl rounded-full" />
 
                 <Image
-                  src={product.image}
+                  src={product.images[0]}
                   alt={product.title}
                   width={800}
                   height={600}
-                  priority={index === 0} // 🔥 LCP optimization
-                  className="relative w-full max-h-[400px] object-contain drop-shadow-2xl"
+                  priority={index === 0}
+                  className="relative w-full max-h-100 object-contain drop-shadow-2xl"
                 />
               </motion.div>
             </div>

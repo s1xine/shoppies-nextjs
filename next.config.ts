@@ -3,9 +3,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "**" },
-      // { protocol: "https", hostname: "images.unsplash.com" },
-      // { protocol: "https", hostname: "picsum.photos" },
-      // { protocol: "https", hostname: "fakestoreapi.com" },
+      { protocol: "http", hostname: "**" },
     ],
   },
 };
