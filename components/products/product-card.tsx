@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { Product } from "@/types/product";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
+import currencyIndianRupee from "@/utils/currency";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const addToCart = useCartStore((state) => state.addToCart);
@@ -75,7 +76,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           </h3>
 
           <p className="text-sm text-muted-foreground mt-1">
-            ₹{Math.round(product.price * 85)}
+            {currencyIndianRupee(product.price)}
           </p>
         </div>
 

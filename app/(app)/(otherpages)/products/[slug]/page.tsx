@@ -1,5 +1,4 @@
-const ProductViewPage = ({ params }) => {
-  console.log(params);
+const ProductViewPage = () => {
   return <div>ProductViewPage</div>;
 };
 
