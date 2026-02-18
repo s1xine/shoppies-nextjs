@@ -22,7 +22,7 @@ export default function WishlistPage() {
         {wishlistProducts.length === 0 ? (
           /* EMPTY */
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <HeartCrack className="w-30 h-30 clas" />
+            <HeartCrack className="w-30 h-30 " />
             <h2 className="text-2xl font-semibold">Your wishlist is empty</h2>
             <p className="text-muted-foreground mt-2">
               Save items you love to your wishlist.

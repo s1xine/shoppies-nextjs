@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import CartItemCard from "@/components/cart/cart-item-card";
 import CartTotalCard from "@/components/cart/cart-total-card";
+import { ShoppingCart } from "lucide-react";
 
 export default function CartPage() {
   const cartItems = useCartStore((state) => state.cartItems);
@@ -27,7 +28,9 @@ export default function CartPage() {
         {cartItems.length === 0 ? (
           /* EMPTY STATE */
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="text-6xl mb-6">🛒</div>
+            <div className="text-6xl mb-6">
+              <ShoppingCart className="w-30 h-30 clas" />
+            </div>
 
             <h2 className="text-3xl font-semibold tracking-tight">
               Your cart feels lonely
