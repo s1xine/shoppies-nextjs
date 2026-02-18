@@ -14,6 +14,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { Product } from "@/types/product";
 import { useRef } from "react";
 import currencyIndianRupee from "@/utils/currency";
+import { useRouter } from "next/navigation";
 
 export default function HeroCarousel({
   heroProducts,
@@ -21,6 +22,7 @@ export default function HeroCarousel({
   heroProducts: Product[];
 }) {
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: true }));
+  const router = useRouter();
 
   return (
     <Carousel
@@ -60,7 +62,8 @@ export default function HeroCarousel({
 
                   <Button
                     variant="outline"
-                    className="rounded-full px-7 py-6 text-base"
+                    className="rounded-full px-7 py-6 text-base cursor-pointer"
+                    onClick={() => router.push(`products/${product.slug}`)}
                   >
                     Learn more
                   </Button>

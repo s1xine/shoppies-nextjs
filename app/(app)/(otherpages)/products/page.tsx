@@ -1,32 +1,3 @@
-// import PageHeader from "@/components/page-header";
-// import CategoryFilter from "@/components/products/category-filter";
-// import ProductsGrid from "@/components/products/products-grid";
-// import {
-//   getCategories,
-//   getProductsByCategory,
-// } from "@/lib/db/queries/products-queries";
-// import { Category, Product } from "@/types/product";
-
-// export default async function ProductsPage() {
-//   const categories: Category[] = await getCategories();
-//   const products: Product[] = await getProductsByCategory(1);
-//   console.log(products);
-//   return (
-//     <main>
-//       <PageHeader title="Products" />
-//       <div className=" flex gap-12 ">
-//         {/* LEFT */}
-//         <div className=" border-r-2 pr-10">
-//           <CategoryFilter categories={categories} />
-//         </div>
-
-//         {/* RIGHT */}
-//         <ProductsGrid products={products} />
-//       </div>
-//     </main>
-//   );
-// }
-
 import PageHeader from "@/components/page-header";
 import CategoryFilter from "@/components/products/category-filter";
 import ProductsGrid from "@/components/products/products-grid";
