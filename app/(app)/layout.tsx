@@ -1,15 +1,12 @@
-import { syncUser } from "@/actions/users-actions";
 import Navbar from "@/components/navbar";
 
-async function Layout({
+function Layout({
   children,
   productViewModal,
 }: {
   children: React.ReactNode;
   productViewModal: React.ReactNode;
 }) {
-  await syncUser();
-
   return (
     <>
       {/* NAVBAR */}

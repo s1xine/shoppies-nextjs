@@ -15,6 +15,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import { Suspense } from "react";
+import ProductGridSkeleton from "@/components/products/product-grid-skeleton";
 
 export default async function ProductsPage() {
   const categories = await getCategories();
@@ -72,7 +74,9 @@ export default async function ProductsPage() {
               </p>
             </div>
           ) : (
-            <ProductsGrid products={products} />
+            <Suspense fallback={<ProductGridSkeleton />}>
+              <ProductsGrid products={products} />
+            </Suspense>
           )}
         </section>
       </div>

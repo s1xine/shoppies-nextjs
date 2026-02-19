@@ -35,19 +35,19 @@ export default function HeroCarousel({
       <CarouselContent className=" flex items-center">
         {heroProducts.map((product, index) => (
           <CarouselItem key={index}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center px-4 md:px-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center px-4 md:px-10">
               {/* LEFT TEXT */}
               <motion.div
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
-                className="space-y-7"
+                className="space-y-7 order-2 lg:order-1"
               >
                 <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-white">
                   {product.title}
                 </h1>
 
-                <p className="text-lg text-gray-400 max-w-md">
+                <p className="text-lg text-gray-400 max-w-md line-clamp-3 min-h-[72px]">
                   {product.description}
                 </p>
 
@@ -75,18 +75,18 @@ export default function HeroCarousel({
                 initial={{ opacity: 0, scale: 0.92 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8 }}
-                className="relative flex justify-center"
+                className="relative flex justify-center order-1"
               >
-                <div className="absolute inset-0 bg-linear-to-tr from-white/10 to-transparent blur-3xl rounded-full" />
-
-                <Image
-                  src={product.images[0]}
-                  alt={product.title}
-                  width={800}
-                  height={600}
-                  priority={index === 0}
-                  className="relative w-full max-h-100 object-contain drop-shadow-2xl"
-                />
+                <div className="relative w-full max-w-xl aspect-4/3 mx-auto">
+                  <Image
+                    src={product.images[0]}
+                    alt={product.title}
+                    fill
+                    priority={index === 0}
+                    className="object-contain drop-shadow-2xl"
+                    sizes="(max-width:768px) 90vw, 600px"
+                  />
+                </div>
               </motion.div>
             </div>
           </CarouselItem>

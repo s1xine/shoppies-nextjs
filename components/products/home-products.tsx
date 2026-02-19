@@ -6,9 +6,5 @@ export default async function HomeProducts() {
   const { bestSellers, newArrivals } = await getHomepageProducts();
   const products: Product[] = [...bestSellers, ...newArrivals];
 
-  return (
-    <div className="mt-12 pb-20 max-w-7xl mx-auto">
-      <ProductsGrid products={products} isHome={true} />
-    </div>
-  );
+  return <ProductsGrid products={products} isHome={true} />;
 }

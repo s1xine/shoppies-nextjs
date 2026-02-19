@@ -1,13 +1,14 @@
-import { getNewProducts } from "@/lib/db/queries/products-queries";
-import HeroCarousel from "./hero-carousel";
+import { Suspense } from "react";
+import HeroCarouselSkeleton from "./hero-carousel-skeleton";
+import HeroSectionFetching from "./hero-section-fetching";
 
-export default async function HeroSection() {
-  const heroProducts = await getNewProducts();
-
+export default function HeroSection() {
   return (
-    <section className="w-full mt-10 min-h-150 bg-black overflow-hidden flex justify-center items-center">
-      <div className="max-w-7xl mx-auto px-10 md:px-16 py-20 relative w-full">
-        <HeroCarousel heroProducts={heroProducts} />
+    <section className="w-full bg-black overflow-hidden flex justify-center items-center min-h-screen lg:min-h-[80vh]">
+      <div className="max-w-7xl mx-auto px-6 md:px-16 py-16 md:py-20 relative w-full">
+        <Suspense fallback={<HeroCarouselSkeleton />}>
+          <HeroSectionFetching />
+        </Suspense>
       </div>
     </section>
   );

@@ -24,7 +24,6 @@ const ProductCard = ({ product }: { product: Product }) => {
 
   return (
     <Card
-      key={product.id}
       className="break-inside-avoid relative group rounded-2xl overflow-hidden
             border bg-card/60 backdrop-blur-xl hover:shadow-xl transition-all duration-300"
     >
