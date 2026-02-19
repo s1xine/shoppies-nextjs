@@ -10,21 +10,18 @@ export default function CategoryFilter({
   categories: Category[];
 }) {
   return (
-    <div>
-      <h3 className="font-semibold mb-4 text-lg">Categories</h3>
-      <ScrollArea className="h-100 pr-3">
-        <div className="flex flex-col gap-2">
-          {categories.map((category) => (
-            <Button
-              key={category.id}
-              variant="ghost"
-              className="justify-start rounded-lg"
-            >
-              {category.name}
-            </Button>
-          ))}
-        </div>
-      </ScrollArea>
-    </div>
+    <ScrollArea className="h-100 pr-3">
+      <div className="flex flex-col gap-2">
+        {categories.map((category) => (
+          <Button
+            key={category.id}
+            variant="ghost"
+            className="justify-start rounded-lg"
+          >
+            {category.name}
+          </Button>
+        ))}
+      </div>
+    </ScrollArea>
   );
 }
