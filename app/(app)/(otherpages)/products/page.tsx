@@ -1,11 +1,4 @@
 import PageHeader from "@/components/page-header";
-import CategoryFilter from "@/components/products/category-filter";
-import ProductsGrid from "@/components/products/products-grid";
-import {
-  getAllProducts,
-  getCategories,
-} from "@/lib/db/queries/products-queries";
-
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -17,11 +10,11 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Suspense } from "react";
 import ProductGridSkeleton from "@/components/products/product-grid-skeleton";
+import CategoryFilterWrapper from "@/components/products/caregory-filter-wrapper";
+import CategoryFilterSkeleton from "@/components/products/category-filter-skeleton";
+import ProductsByCategoryWrapper from "@/components/products/products-by-category-wrapper";
 
-export default async function ProductsPage() {
-  const categories = await getCategories();
-  const products = await getAllProducts();
-
+export default function ProductsPage() {
   return (
     <main className="max-w-7xl mx-auto px-6 pb-16">
       {/* Header */}
@@ -60,24 +53,18 @@ export default async function ProductsPage() {
         {/* SIDEBAR */}
         <aside className="col-span-12 lg:col-span-3">
           <div className="sticky top-24">
-            <CategoryFilter categories={categories} />
+            <h3 className="font-semibold mb-4 text-lg">Categories</h3>
+            <Suspense fallback={<CategoryFilterSkeleton />}>
+              <CategoryFilterWrapper />
+            </Suspense>
           </div>
         </aside>
 
         {/* PRODUCTS */}
         <section className="col-span-12 lg:col-span-9">
-          {products.length === 0 ? (
-            <div className="border rounded-xl p-12 text-center">
-              <h3 className="text-lg font-semibold mb-2">No products found</h3>
-              <p className="text-muted-foreground text-sm">
-                Try selecting another category or search something else.
-              </p>
-            </div>
-          ) : (
-            <Suspense fallback={<ProductGridSkeleton />}>
-              <ProductsGrid products={products} />
-            </Suspense>
-          )}
+          <Suspense fallback={<ProductGridSkeleton />}>
+            <ProductsByCategoryWrapper />
+          </Suspense>
         </section>
       </div>
     </main>
