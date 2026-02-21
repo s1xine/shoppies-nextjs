@@ -1,4 +1,3 @@
-import { syncUser } from "@/actions/users-actions";
 import CTA from "@/components/cta";
 import Features from "@/components/features";
 import Footer from "@/components/foorter";
@@ -8,8 +7,6 @@ import ProductGridSkeleton from "@/components/products/product-grid-skeleton";
 import { Suspense } from "react";
 
 export default async function Page() {
-  syncUser(); // clerk alaredy handles auth and we just need to sync the user to our db
-
   return (
     <main className="min-h-screen">
       {/* HERO */}
