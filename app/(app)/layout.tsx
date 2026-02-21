@@ -1,5 +1,5 @@
 import { syncUser } from "@/actions/users-actions";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar/navbar";
 
 function Layout({
   children,

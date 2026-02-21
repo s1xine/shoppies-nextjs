@@ -2,21 +2,19 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Product } from "@/types/product";
 import { Button } from "@/components/ui/button";
 import currencyIndianRupee from "@/utils/currency";
 import StarRating from "../star-rating";
 
-const ProductView = ({
-  product,
-  isModal,
-}: {
+interface ModalProps {
   product: Product;
   isModal?: boolean;
-}) => {
-  const router = useRouter();
+  handleOpenChange?: (open: boolean) => void;
+}
+
+const ProductView = ({ product, isModal, handleOpenChange }: ModalProps) => {
   const [activeImage, setActiveImage] = useState(product.images?.[0]);
 
   const currentIndex =
@@ -198,8 +196,14 @@ const ProductView = ({
           >
             <Button className="flex-1 h-12 text-base">Add to Cart</Button>
 
-            <Button variant="outline" className="flex-1 h-12 text-base">
-              Add to Wishlist
+            <Button
+              variant="outline"
+              className="flex-1 h-12 text-base"
+              onClick={() => {
+                if (isModal && handleOpenChange) handleOpenChange(true);
+              }}
+            >
+              Learn More
             </Button>
           </motion.div>
         )}

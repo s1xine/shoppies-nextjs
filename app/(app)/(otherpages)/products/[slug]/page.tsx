@@ -7,14 +7,13 @@ const ProductViewPage = async ({ params }: { params: { slug: string } }) => {
   const { slug } = await params;
   const product: Product = await getProductBySlug(slug);
 
-  console.log(product);
   if (!product) return <div>Product not found</div>;
 
   return (
     <div className="min-h-screen bg-background">
       <BreadCrumbComponent productTitle={product.title} />
 
-      <div className="mt-12">
+      <div className="container mx-auto px-6 mt-12">
         <ProductView product={product} />
       </div>
       {/* extra spacing bottom */}
