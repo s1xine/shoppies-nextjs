@@ -22,7 +22,7 @@ export async function syncUser() {
       })
       .onConflictDoNothing();
 
-    return user;
+    return { success: true };
   } catch (err) {
     console.log("Clerk not ready yet:", err);
     return null;
