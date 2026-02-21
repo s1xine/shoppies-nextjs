@@ -7,7 +7,7 @@ export default function ContactPage() {
     <>
       <PageHeader title="Contact Us" />
 
-      <section className="pb-24">
+      <section className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-16 items-start">
           {/* LEFT — INFO */}
           <div className="space-y-8">
@@ -63,7 +63,9 @@ export default function ContactPage() {
           </div>
 
           {/* RIGHT — FORM */}
-          <ContactForm />
+          <div className="mb-20">
+            <ContactForm />
+          </div>
         </div>
       </section>
     </>

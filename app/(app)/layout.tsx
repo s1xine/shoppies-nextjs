@@ -1,12 +1,20 @@
-import Navbar from "@/components/navbar";
+import SyncUserClient from "@/components/auth/sync-user-client";
+import Navbar from "@/components/navbar/navbar";
 
-function Layout({ children }: { children: React.ReactNode }) {
+function Layout({
+  children,
+  productViewModal,
+}: {
+  children: React.ReactNode;
+  productViewModal: React.ReactNode;
+}) {
   return (
     <>
-      {/* NAVBAR */}
+      <SyncUserClient />
       <Navbar />
 
       <main>{children}</main>
+      {productViewModal}
     </>
   );
 }

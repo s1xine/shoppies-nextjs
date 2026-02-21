@@ -3,11 +3,12 @@
 import PageHeader from "@/components/page-header";
 import { useCartStore } from "@/store/cartStore";
 import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
 import WishlistCard from "@/components/wishlist-card";
 import { HeartCrack } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function WishlistPage() {
+  const router = useRouter();
   const wishlist = useCartStore((state) => state.wishlist);
   const getProduct = useCartStore((state) => state.getProduct);
 
@@ -21,14 +22,14 @@ export default function WishlistPage() {
         {wishlistProducts.length === 0 ? (
           /* EMPTY */
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <HeartCrack className="w-30 h-30 clas" />
+            <HeartCrack className="w-30 h-30 " />
             <h2 className="text-2xl font-semibold">Your wishlist is empty</h2>
             <p className="text-muted-foreground mt-2">
               Save items you love to your wishlist.
             </p>
 
             <Button
-              onClick={() => redirect("/products")}
+              onClick={() => router.push("/products")}
               className="mt-8 rounded-2xl px-8 h-12 text-base"
             >
               Explore Products

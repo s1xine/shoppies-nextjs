@@ -1,6 +1,4 @@
-"use client";
-import { redirect } from "next/navigation";
-import { Button } from "./ui/button";
+import ContinueShoppingButton from "./button-continue-shopping";
 
 const CTA = () => {
   return (
@@ -12,13 +10,7 @@ const CTA = () => {
         </p>
 
         <div className="mt-6 flex justify-center gap-4">
-          <Button
-            onClick={() => redirect("/products")}
-            className="rounded-full bg-purple-600 hover:bg-purple-700 transition-all duration-200 dark:text-white"
-            size="lg"
-          >
-            Start Shopping
-          </Button>
+          <ContinueShoppingButton />
         </div>
       </div>
     </section>

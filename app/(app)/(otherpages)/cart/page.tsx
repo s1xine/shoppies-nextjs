@@ -3,13 +3,15 @@
 import PageHeader from "@/components/page-header";
 import { useCartStore } from "@/store/cartStore";
 import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
-import CartItemCard from "@/components/card-item-card";
-import CartTotalCard from "@/components/card-total-card";
+import { useRouter } from "next/navigation";
+import CartItemCard from "@/components/cart/cart-item-card";
+import CartTotalCard from "@/components/cart/cart-total-card";
+import { ShoppingCart } from "lucide-react";
 
 export default function CartPage() {
   const cartItems = useCartStore((state) => state.cartItems);
   const getProduct = useCartStore((state) => state.getProduct);
+  const router = useRouter();
 
   // subtotal
   const subtotal = cartItems.reduce((total, item) => {
@@ -26,7 +28,9 @@ export default function CartPage() {
         {cartItems.length === 0 ? (
           /* EMPTY STATE */
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="text-6xl mb-6">🛒</div>
+            <div className="text-6xl mb-6">
+              <ShoppingCart className="w-30 h-30 clas" />
+            </div>
 
             <h2 className="text-3xl font-semibold tracking-tight">
               Your cart feels lonely
@@ -38,7 +42,7 @@ export default function CartPage() {
             </p>
 
             <Button
-              onClick={() => redirect("/products")}
+              onClick={() => router.push("/products")}
               className="mt-8 rounded-2xl px-8 h-12 text-base"
             >
               Explore Products
