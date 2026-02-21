@@ -1,4 +1,4 @@
-import { syncUser } from "@/actions/users-actions";
+import SyncUserClient from "@/components/auth/sync-user-client";
 import Navbar from "@/components/navbar/navbar";
 
 function Layout({
@@ -8,11 +8,9 @@ function Layout({
   children: React.ReactNode;
   productViewModal: React.ReactNode;
 }) {
-  syncUser(); // clerk alaredy handles auth and we just need to sync the user to our db
-
   return (
     <>
-      {/* NAVBAR */}
+      <SyncUserClient />
       <Navbar />
 
       <main>{children}</main>
