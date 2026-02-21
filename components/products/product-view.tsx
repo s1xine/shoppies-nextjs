@@ -11,10 +11,9 @@ import StarRating from "../star-rating";
 interface ModalProps {
   product: Product;
   isModal?: boolean;
-  handleOpenChange?: (open: boolean) => void;
 }
 
-const ProductView = ({ product, isModal, handleOpenChange }: ModalProps) => {
+const ProductView = ({ product, isModal = false }: ModalProps) => {
   const [activeImage, setActiveImage] = useState(product.images?.[0]);
 
   const currentIndex =
@@ -200,7 +199,7 @@ const ProductView = ({ product, isModal, handleOpenChange }: ModalProps) => {
               variant="outline"
               className="flex-1 h-12 text-base"
               onClick={() => {
-                if (isModal && handleOpenChange) handleOpenChange(true);
+                if (isModal) window.location.reload();
               }}
             >
               Learn More

@@ -1,34 +1,35 @@
 "use client";
-
 import { useRouter } from "next/navigation";
-import { Product } from "@/types/product";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import ProductView from "./product-view";
-
-const ProductViewModalClient = ({ product }: { product: Product }) => {
+import { useEffect, useState } from "react";
+const ProductViewModalClient = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const router = useRouter();
+  const [open, setOpen] = useState(true);
+  useEffect(() => {
+    setOpen(true);
+  }, []);
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
-      if (window.history.length > 1) router.back();
-      else router.push("/");
-    } else {
-      window.location.reload();
+      if (window.history.length > 1) {
+        setOpen(false);
+        router.back();
+      } else router.push("/");
     }
   };
   return (
-    <Dialog defaultOpen onOpenChange={handleOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
         className="
         p-0 overflow-hidden rounded-2xl w-[96vw] max-w-[1200px] min-[1300px]:max-w-[1350px] xl:max-w-[1400px] 2xl:max-w-[1700px] 3xl:max-w-[1900px] max-h-[92vh] overflow-y-auto"
       >
-        <DialogTitle className="hidden">{product.title}</DialogTitle>
+        <DialogTitle className="hidden">Product</DialogTitle>
 
-        <ProductView
-          product={product}
-          isModal={true}
-          handleOpenChange={handleOpenChange}
-        />
+        {children}
       </DialogContent>
     </Dialog>
   );
