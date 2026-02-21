@@ -9,6 +9,7 @@ import {
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { Navlink, navLinks } from "./navbar";
+import { ThemeToggle } from "../ThemeToggle";
 
 const MobileMenu = ({
   mobileOpen,
@@ -56,6 +57,8 @@ const MobileMenu = ({
           ))}
 
           <div className="border-t pt-4 flex flex-col gap-4">
+            <ThemeToggle />
+
             <SignedOut>
               <SignInButton mode="modal">
                 <button onClick={() => setMobileOpen(false)}>Login</button>

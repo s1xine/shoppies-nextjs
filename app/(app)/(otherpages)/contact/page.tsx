@@ -63,7 +63,9 @@ export default function ContactPage() {
           </div>
 
           {/* RIGHT — FORM */}
-          <ContactForm />
+          <div className="mb-20">
+            <ContactForm />
+          </div>
         </div>
       </section>
     </>

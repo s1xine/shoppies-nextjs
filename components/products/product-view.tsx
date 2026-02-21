@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Product } from "@/types/product";
 import { Button } from "@/components/ui/button";
 import currencyIndianRupee from "@/utils/currency";
 import StarRating from "../star-rating";
+
+import ProductImageCarousel from "./product-image-carousel";
 
 interface ModalProps {
   product: Product;
@@ -14,24 +14,6 @@ interface ModalProps {
 }
 
 const ProductView = ({ product, isModal = false }: ModalProps) => {
-  const [activeImage, setActiveImage] = useState(product.images?.[0]);
-
-  const currentIndex =
-    product.images?.findIndex((img) => img === activeImage) ?? 0;
-
-  const goNext = () => {
-    if (!product.images?.length) return;
-    const next = (currentIndex + 1) % product.images.length;
-    setActiveImage(product.images[next]);
-  };
-
-  const goPrev = () => {
-    if (!product.images?.length) return;
-    const prev =
-      (currentIndex - 1 + product.images.length) % product.images.length;
-    setActiveImage(product.images[prev]);
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96, y: 20 }}
@@ -45,89 +27,7 @@ const ProductView = ({ product, isModal = false }: ModalProps) => {
         "
     >
       {/* ================= LEFT: IMAGE SECTION ================= */}
-      <div className="bg-muted/40 p-6 sm:p-10 flex flex-col justify-center">
-        <div className="relative aspect-square w-full max-w-2xl mx-auto">
-          <AnimatePresence mode="wait">
-            {activeImage && (
-              <motion.div
-                key={activeImage}
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.35 }}
-                className="absolute inset-0"
-              >
-                <Image
-                  src={activeImage}
-                  alt={product.title}
-                  fill
-                  priority
-                  className="object-contain rounded-xl"
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-          {/* carousel controls */}
-          <div>
-            {product.images?.length > 1 && (
-              <>
-                <button
-                  onClick={goPrev}
-                  className="
-                    absolute left-3 top-1/2 -translate-y-1/2
-                    h-10 w-10 rounded-full
-                    bg-background/80 backdrop-blur
-                    border border-border
-                    flex items-center justify-center
-                    hover:scale-110 transition
-                    "
-                >
-                  ←
-                </button>
-
-                <button
-                  onClick={goNext}
-                  className="
-                    absolute right-3 top-1/2 -translate-y-1/2
-                    h-10 w-10 rounded-full
-                    bg-background/80 backdrop-blur
-                    border border-border
-                    flex items-center justify-center
-                    hover:scale-110 transition
-                    "
-                >
-                  →
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* thumbnails */}
-        {product.images?.length > 1 && (
-          <div className="flex gap-3 mt-8 flex-wrap justify-center">
-            {product.images.map((img) => (
-              <motion.button
-                key={img}
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveImage(img)}
-                className={`
-                      relative w-16 h-16 rounded-xl overflow-hidden border
-                      transition-all duration-300
-                      ${
-                        activeImage === img
-                          ? "border-primary ring-2 ring-primary/20"
-                          : "border-border hover:border-primary/50"
-                      }
-                    `}
-              >
-                <Image src={img} alt="" fill className="object-cover" />
-              </motion.button>
-            ))}
-          </div>
-        )}
-      </div>
+      <ProductImageCarousel images={product.images} title={product.title} />
 
       {/* ================= RIGHT: DETAILS ================= */}
       <div className="p-6 sm:p-10 flex flex-col">
@@ -199,7 +99,9 @@ const ProductView = ({ product, isModal = false }: ModalProps) => {
               variant="outline"
               className="flex-1 h-12 text-base"
               onClick={() => {
-                if (isModal) window.location.reload();
+                if (isModal) {
+                  window.location.href = `/products/${product.slug}`;
+                }
               }}
             >
               Learn More
