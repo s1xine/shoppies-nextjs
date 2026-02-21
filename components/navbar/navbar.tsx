@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { X, Menu } from "lucide-react";
+import { X, Menu, SearchIcon } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
 import { Suspense, useEffect, useState } from "react";
 import { ThemeToggle } from "../ThemeToggle";
@@ -79,6 +79,10 @@ export default function Navbar() {
             >
               <div className="hidden md:block">
                 <ThemeToggle />
+              </div>
+
+              <div className=" md:hidden">
+                <SearchIcon className="w-7 h-7" />
               </div>
 
               <div className="md:hidden ">

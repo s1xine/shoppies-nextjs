@@ -7,16 +7,24 @@ import {
 } from "lucide-react";
 import React from "react";
 
-function Feature({ icon, title }: { icon: React.ReactNode; title: string }) {
+function Feature({
+  icon,
+  title,
+  className = "",
+}: {
+  icon: React.ReactNode;
+  title: string;
+  className?: string;
+}) {
   return (
-    <div className="flex flex-col items-center text-center p-3">
+    <div className={`flex flex-col items-center text-center p-3 ${className}`}>
       <div
         className="
-      bg-white/20 dark:bg-black/30 
-      backdrop-blur-md 
-      p-3 rounded-full mb-3
-      border border-white/20 dark:border-white/10
-      "
+        bg-white/20 dark:bg-black/30 
+        backdrop-blur-md 
+        p-3 rounded-full mb-3
+        border border-white/20 dark:border-white/10
+        "
       >
         {icon}
       </div>
@@ -75,6 +83,7 @@ const Features = () => {
               <HandCoins className="text-white dark:text-red-400" size={22} />
             }
             title="Easy Returns"
+            className="col-span-2 md:col-span-1"
           />
         </div>
       </section>
