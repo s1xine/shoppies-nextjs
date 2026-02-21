@@ -1,11 +1,9 @@
-import ProductViewModalClient from "@/components/products/product-modal";
-import { getProductBySlug } from "@/lib/db/queries/products-queries";
-import { Product } from "@/types/product";
+import ProductViewModalShell from "@/components/products/product-view-modal-shell";
 
 const ProductViewModal = async ({ params }: { params: { slug: string } }) => {
   const { slug } = await params;
-  const productBySlug: Product = await getProductBySlug(slug);
-  return <ProductViewModalClient product={productBySlug} />;
+
+  return <ProductViewModalShell slug={slug} />;
 };
 
 export default ProductViewModal;
