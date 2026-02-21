@@ -40,16 +40,7 @@ const ProductViewModalClient = ({ product }: { product: Product }) => {
     <Dialog defaultOpen onOpenChange={handleOpenChange}>
       <DialogContent
         className="
-        p-0 overflow-hidden rounded-2xl
-        w-[96vw]
-         max-w-[1200px]                  
-  min-[1300px]:max-w-[1350px]    
-  xl:max-w-[1400px]               
-  2xl:max-w-[1700px]              
-  3xl:max-w-[1900px] 
-  max-h-[92vh]
-        overflow-y-auto
-      "
+        p-0 overflow-hidden rounded-2xl w-[96vw] max-w-[1200px] min-[1300px]:max-w-[1350px] xl:max-w-[1400px] 2xl:max-w-[1700px] 3xl:max-w-[1900px] max-h-[92vh] overflow-y-auto"
       >
         <DialogTitle className="hidden">{product.title}</DialogTitle>
 
