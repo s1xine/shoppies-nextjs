@@ -1,41 +1,21 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import { Product } from "@/types/product";
-import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import ProductView from "./product-view";
 
 const ProductViewModalClient = ({ product }: { product: Product }) => {
   const router = useRouter();
-  const [activeImage, setActiveImage] = useState(product.images?.[0]);
-
-  const currentIndex =
-    product.images?.findIndex((img) => img === activeImage) ?? 0;
-
-  const goNext = () => {
-    if (!product.images?.length) return;
-    const next = (currentIndex + 1) % product.images.length;
-    setActiveImage(product.images[next]);
-  };
-
-  const goPrev = () => {
-    if (!product.images?.length) return;
-    const prev =
-      (currentIndex - 1 + product.images.length) % product.images.length;
-    setActiveImage(product.images[prev]);
-  };
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       if (window.history.length > 1) router.back();
       else router.push("/");
+    } else {
+      window.location.reload();
     }
   };
-
   return (
     <Dialog defaultOpen onOpenChange={handleOpenChange}>
       <DialogContent
@@ -44,7 +24,11 @@ const ProductViewModalClient = ({ product }: { product: Product }) => {
       >
         <DialogTitle className="hidden">{product.title}</DialogTitle>
 
-        <ProductView product={product} isModal={true} />
+        <ProductView
+          product={product}
+          isModal={true}
+          handleOpenChange={handleOpenChange}
+        />
       </DialogContent>
     </Dialog>
   );
