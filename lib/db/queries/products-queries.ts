@@ -1,13 +1,17 @@
 import { db } from "@/lib/drizzle";
 import { productsTable, categoriesTable } from "@/schema";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
+import { cacheLife, cacheTag } from "next/cache";
 
 // fetch all
 export async function getAllProducts() {
+  "use cache";
   return await db.select().from(productsTable);
 }
 
 export async function getCategories() {
+  "use cache";
+  cacheLife("minutes");
   return await db.select().from(categoriesTable);
 }
 
@@ -16,6 +20,20 @@ export async function getProductsByCategory(categoryId: number) {
     .select()
     .from(productsTable)
     .where(eq(productsTable.categoryId, categoryId));
+}
+
+//fetch products by ids []
+export async function getProductsByIds(ids: number[]) {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("product-by-ids");
+
+  if (!ids.length) return [];
+
+  return await db
+    .select()
+    .from(productsTable)
+    .where(inArray(productsTable.id, ids));
 }
 
 // fetch with category
@@ -79,6 +97,9 @@ export async function getBestSellers() {
 
 // new arrivals
 export async function getNewProducts() {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("new-products");
   return await db
     .select()
     .from(productsTable)
@@ -87,6 +108,9 @@ export async function getNewProducts() {
 
 //Featured homepage query
 export async function getHomepageProducts() {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("homepage-products");
   const [bestSellers, newArrivals] = await Promise.all([
     db.select().from(productsTable).where(eq(productsTable.isBestSeller, true)),
     db.select().from(productsTable).where(eq(productsTable.isNew, true)),

@@ -1,105 +1,70 @@
-import { CartItem, Product } from "@/types/product";
+import { CartItem } from "@/types/cart";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type CartStore = {
   cartItems: CartItem[];
-  wishlist: number[];
-  products: Product[];
-
-  setProducts: (products: Product[]) => void;
-
-  addToCart: (id: number) => void;
-  incrementQty: (id: number) => void;
-  decrementQty: (id: number) => void;
-  removeItem: (id: number) => void;
-
-  toggleWishlist: (id: number) => void;
-  getProduct: (id: number) => Product | undefined;
+  setCart: (items: CartItem[]) => void;
+  clearCart: () => void;
+  addToCart: (item: CartItem) => void;
+  removeFromCart: (id: number) => void;
+  updateQuantity: (id: number, qty: number) => void;
+  getCartCount: () => number;
 };
 
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       cartItems: [],
-      wishlist: [],
-      products: [],
 
-      // hydrate products
-      setProducts: (products) => set({ products }),
+      setCart: (items) => set({ cartItems: items }),
 
-      // add first time OR increment
-      addToCart: (id) =>
+      clearCart: () => set({ cartItems: [] }),
+
+      addToCart: (item) =>
         set((state) => {
-          const exists = state.cartItems.find((item) => item.id === id);
+          const exists = state.cartItems.find((i) => i.id === item.id);
 
           if (exists) {
             return {
-              cartItems: state.cartItems.map((item) =>
-                item.id === id
-                  ? { ...item, quantity: item.quantity + 1 }
-                  : item,
+              cartItems: state.cartItems.map((i) =>
+                i.id === item.id
+                  ? { ...i, quantity: i.quantity + item.quantity }
+                  : i,
               ),
             };
           }
 
-          return {
-            cartItems: [...state.cartItems, { id, quantity: 1 }],
-          };
+          return { cartItems: [...state.cartItems, item] };
         }),
 
-      // explicit increment
-      incrementQty: (id) =>
+      removeFromCart: (id) =>
         set((state) => ({
-          cartItems: state.cartItems.map((item) =>
-            item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
-          ),
+          cartItems: state.cartItems.filter((i) => i.id !== id),
         })),
 
-      //  decrement qty
-      decrementQty: (id) =>
+      updateQuantity: (id, qty) =>
         set((state) => {
-          const item = state.cartItems.find((i) => i.id === id);
-          if (!item) return state;
-
-          // if qty = 1 → remove item
-          if (item.quantity === 1) {
+          if (qty <= 0) {
             return {
               cartItems: state.cartItems.filter((i) => i.id !== id),
             };
           }
 
-          // else decrease
           return {
-            cartItems: state.cartItems.map((item) =>
-              item.id === id ? { ...item, quantity: item.quantity - 1 } : item,
+            cartItems: state.cartItems.map((i) =>
+              i.id === id ? { ...i, quantity: qty } : i,
             ),
           };
         }),
 
-      // remove fully
-      removeItem: (id) =>
-        set((state) => ({
-          cartItems: state.cartItems.filter((item) => item.id !== id),
-        })),
-
-      toggleWishlist: (id) =>
-        set((state) => ({
-          wishlist: state.wishlist.includes(id)
-            ? state.wishlist.filter((item) => item !== id)
-            : [...state.wishlist, id],
-        })),
-
-      getProduct: (id: number) => {
-        return get().products.find((product) => product.id === id);
-      },
+      getCartCount: () => get().cartItems.reduce((t, i) => t + i.quantity, 0),
     }),
     {
       name: "cart-storage",
       partialize: (state) => ({
         cartItems: state.cartItems,
-        wishlist: state.wishlist,
-        products: state.products,
+        getCartCount: state.getCartCount,
       }),
     },
   ),
