@@ -1,7 +1,7 @@
 "use client";
+
 import Image from "next/image";
 import { Check, Heart, ShoppingCart } from "lucide-react";
-
 import { useCartStore } from "@/store/cartStore";
 import { useUser, useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
@@ -9,46 +9,63 @@ import { Product } from "@/types/product";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 import currencyIndianRupee from "@/utils/currency";
+import { useWishlistStore } from "@/store/wishlistStore";
+import { useToggleWishlist } from "@/lib/hooks/use-toggle-wishlist";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const addToCart = useCartStore((state) => state.addToCart);
-  const toggleWishlist = useCartStore((state) => state.toggleWishlist);
-  const wishlist = useCartStore((state) => state.wishlist);
   const cartItems = useCartStore((state) => state.cartItems);
-  const isInCart = cartItems.some((item) => item.id === product.id);
-  const isWishlisted = wishlist.includes(product.id);
+  const wishlist = useWishlistStore((state) => state.wishlist);
 
   const { isSignedIn } = useUser();
   const { openSignIn } = useClerk();
   const router = useRouter();
 
+  const isInCart = cartItems.some((i) => i.id === product.id);
+  const isWishlisted = wishlist.includes(product.id);
+
+  // Add to cart
+  const handleAddToCart = async () => {
+    addToCart({
+      id: product.id,
+      title: product.title,
+      image: product.images?.[0],
+      price: product.price,
+      slug: product.slug,
+      quantity: 1,
+    });
+  };
+
+  const useToggleWishlistMutation = useToggleWishlist(product);
+
+  const handleAddToWishlist = () => {
+    if (!isSignedIn) {
+      openSignIn();
+      return;
+    }
+    useToggleWishlistMutation.mutateAsync();
+  };
+
   return (
-    <Card
-      className="break-inside-avoid relative group rounded-2xl overflow-hidden
-            border bg-card/60 backdrop-blur-xl hover:shadow-xl transition-all duration-300"
-    >
-      {/* Whishlist button */}
+    <Card className="break-inside-avoid relative group rounded-2xl overflow-hidden border bg-card/60 backdrop-blur-xl hover:shadow-xl transition-all duration-300">
+      {/* ❤️ wishlist */}
       <Button
         variant="link"
-        onClick={() => {
-          if (!isSignedIn) {
-            openSignIn(); // opens clerk modal
-            return;
-          }
-          toggleWishlist(product.id);
-        }}
+        onClick={handleAddToWishlist}
         className={`absolute top-4 right-0 z-20 
-            ${isWishlisted ? "opacity-100" : "opacity-0"}
-              group-hover:opacity-100 transition `}
+        ${isWishlisted ? "opacity-100" : "opacity-0"}
+        group-hover:opacity-100 transition`}
       >
         <div
-          className={` ${isWishlisted ? "bg-red-500/20" : "bg-red-500/60"} dark:bg-black/60 backdrop-blur-md p-2 rounded-full cursor-pointer`}
+          className={`${
+            isWishlisted ? "bg-red-500/20" : "bg-red-500/60"
+          } dark:bg-black/60 backdrop-blur-md p-2 rounded-full`}
         >
-          {isWishlisted ? (
-            <Heart className="w-4 h-4 text-red-500 fill-red-500 " />
-          ) : (
-            <Heart className="w-4 h-4 text-white " />
-          )}
+          <Heart
+            className={`w-4 h-4 ${
+              isWishlisted ? "text-red-500 fill-red-500" : "text-white"
+            }`}
+          />
         </div>
       </Button>
 
@@ -65,7 +82,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       </div>
 
       {/* info */}
-      <div className=" flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <div className="p-4">
           <h3
             className="text-sm font-medium line-clamp-2 cursor-pointer"
@@ -79,27 +96,20 @@ const ProductCard = ({ product }: { product: Product }) => {
           </p>
         </div>
 
+        {/* 🛒 button */}
         <Button
           variant="link"
-          onClick={() => {
-            if (!isSignedIn) {
-              openSignIn();
-              return;
-            }
-            addToCart(product.id);
-          }}
+          onClick={handleAddToCart}
           disabled={isInCart}
           className="bottom-3 right-3 opacity-0 group-hover:opacity-100 transition"
         >
           <div
-            className={`
-          p-2 rounded-full cursor-pointer shadow-lg transition
-          ${
-            isInCart
-              ? "bg-green-600 text-white"
-              : "bg-primary text-primary-foreground"
-          }
-        `}
+            className={`p-2 rounded-full shadow-lg transition
+            ${
+              isInCart
+                ? "bg-green-600 text-white"
+                : "bg-primary text-primary-foreground"
+            }`}
           >
             {isInCart ? (
               <Check className="w-4 h-4" />

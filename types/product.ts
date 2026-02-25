@@ -1,13 +1,3 @@
-export interface OldProduct {
-  id: number;
-  title: string;
-  slug: string;
-  price: number;
-  description: string | null;
-  categoryId?: number;
-  images: string[];
-}
-
 export interface Product {
   id: number;
   title: string;
@@ -28,11 +18,6 @@ export interface Category {
   name: string;
   image: string | null;
   slug: string;
-}
-
-export interface CartItem {
-  id: number;
-  quantity: number;
 }
 
 export interface StarRatingProps {

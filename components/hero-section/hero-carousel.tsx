@@ -16,12 +16,15 @@ import { Product } from "@/types/product";
 import { useRef, useState, useEffect } from "react";
 import currencyIndianRupee from "@/utils/currency";
 import { useRouter } from "next/navigation";
+import { useCartStore } from "@/store/cartStore";
 
 export default function HeroCarousel({
   heroProducts,
 }: {
   heroProducts: Product[];
 }) {
+  const addToCart = useCartStore((state) => state.addToCart);
+
   const router = useRouter();
 
   // autoplay plugin
@@ -45,6 +48,18 @@ export default function HeroCarousel({
       api.off("init", update);
     };
   }, [api]);
+
+  // Add to cart
+  const handleAddToCart = async (product: Product) => {
+    addToCart({
+      id: product.id,
+      title: product.title,
+      image: product.images?.[0],
+      price: product.price,
+      slug: product.slug,
+      quantity: 1,
+    });
+  };
 
   return (
     <div className="w-full">
@@ -80,7 +95,10 @@ export default function HeroCarousel({
                   </p>
 
                   <div className="flex gap-4 pt-6">
-                    <Button className="rounded-full px-7 py-6 text-base bg-purple-700 text-white hover:bg-purple-900">
+                    <Button
+                      className="rounded-full px-7 py-6 text-base bg-purple-700 text-white hover:bg-purple-900 cursor-pointer"
+                      onClick={() => handleAddToCart(product)}
+                    >
                       Buy now
                     </Button>
 

@@ -2,9 +2,10 @@
 
 import { db } from "@/lib/drizzle";
 import { usersTable } from "@/schema";
-import { currentUser } from "@clerk/nextjs/server";
+import { DbUser } from "@/types/user";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
-export async function syncUser() {
+export async function syncAuthUser() {
   try {
     const user = await currentUser();
     if (!user) return null;
@@ -24,7 +25,18 @@ export async function syncUser() {
 
     return { success: true };
   } catch (err) {
-    console.log("Clerk not ready yet:", err);
+    console.error("Clerk not ready yet:", err);
     return null;
   }
+}
+
+export async function checkDbUser(): Promise<DbUser | null> {
+  const { userId } = await auth();
+  if (!userId) return null;
+
+  const dbUser = await db.query.usersTable.findFirst({
+    where: (user, { eq }) => eq(user.clerkId, userId),
+  });
+
+  return dbUser ?? null;
 }

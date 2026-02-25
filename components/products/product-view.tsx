@@ -7,6 +7,7 @@ import currencyIndianRupee from "@/utils/currency";
 import StarRating from "../star-rating";
 
 import ProductImageCarousel from "./product-image-carousel";
+import { useCartStore } from "@/store/cartStore";
 
 interface ModalProps {
   product: Product;
@@ -14,6 +15,21 @@ interface ModalProps {
 }
 
 const ProductView = ({ product, isModal = false }: ModalProps) => {
+  const addToCart = useCartStore((state) => state.addToCart);
+
+  // Add to cart
+  const handleAddToCart = async () => {
+    addToCart({
+      id: product.id,
+      title: product.title,
+      image: product.images?.[0],
+      price: product.price,
+      slug: product.slug,
+      quantity: 1,
+    });
+    return;
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96, y: 20 }}
@@ -63,7 +79,12 @@ const ProductView = ({ product, isModal = false }: ModalProps) => {
               transition={{ delay: 0.25 }}
               className="flex flex-col sm:flex-row gap-3 mt-10"
             >
-              <Button className="flex-1 h-12 text-base">Add to Cart</Button>
+              <Button
+                className="flex-1 h-12 text-base cursor-pointer"
+                onClick={handleAddToCart}
+              >
+                Add to Cart
+              </Button>
 
               <Button variant="outline" className="flex-1 h-12 text-base">
                 Add to Wishlist
@@ -93,7 +114,12 @@ const ProductView = ({ product, isModal = false }: ModalProps) => {
             transition={{ delay: 0.25 }}
             className="flex flex-col sm:flex-row gap-3 mt-10"
           >
-            <Button className="flex-1 h-12 text-base">Add to Cart</Button>
+            <Button
+              className="flex-1 h-12 text-base cursor-pointer"
+              onClick={handleAddToCart}
+            >
+              Add to Cart
+            </Button>
 
             <Button
               variant="outline"
