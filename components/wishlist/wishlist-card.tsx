@@ -2,22 +2,22 @@
 
 import Image from "next/image";
 import { ShoppingCart, X } from "lucide-react";
-import { useCartStore } from "@/store/cartStore";
-import { Product } from "@/types/product";
+import { useAddToCartMutation } from "@/lib/hooks/use-cart";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import currencyIndianRupee from "@/utils/currency";
-import { useToggleWishlist } from "@/lib/hooks/use-toggle-wishlist";
+import { useToggleWishlist } from "@/lib/hooks/use-wishlist";
+import { WishlistItem } from "@/types/wishlist";
 
-const WishlistCard = ({ product }: { product: Product }) => {
-  const addToCart = useCartStore((state) => state.addToCart);
+const WishlistCard = ({ product }: { product: WishlistItem }) => {
+  const { mutateAsync: addToCart } = useAddToCartMutation();
   const useToggleWishlistMutation = useToggleWishlist(product);
 
   const handleAddToCartFromWishlist = () => {
     addToCart({
       id: product.id,
       title: product.title,
-      image: product.images?.[0],
+      image: product.image,
       price: product.price,
       slug: product.slug,
       quantity: 1,
@@ -32,7 +32,7 @@ const WishlistCard = ({ product }: { product: Product }) => {
         {/* Image */}
         <div className="relative h-40 mb-4">
           <Image
-            src={product.images[0]}
+            src={product.image}
             alt={product.title}
             fill
             className="object-contain transition-transform duration-300 group-hover:scale-105"

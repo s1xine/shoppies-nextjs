@@ -4,18 +4,16 @@ import { useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { syncAuthUser } from "@/actions/users-actions";
 import { useWishlistStore } from "@/store/wishlistStore";
-import { getWishlistIds } from "@/actions/wishlist-actions";
-import { useQuery } from "@tanstack/react-query";
+import { useGetWishlistIds } from "@/lib/hooks/use-wishlist";
+import { CartSync } from "../CartSync";
 
 export default function SyncUserClient() {
   const { isSignedIn, isLoaded, user } = useUser();
   const setWishlist = useWishlistStore((state) => state.setWishlist);
   const clearWishlist = useWishlistStore((state) => state.clearWishlist);
 
-  const { data: wishlistItemsIds = [] } = useQuery<number[]>({
-    queryKey: ["wishlistItemsIds"],
-    queryFn: getWishlistIds,
-  });
+  //for wishlist
+  const { data: wishlistItemsIds = [] } = useGetWishlistIds();
 
   useEffect(() => {
     if (isSignedIn && user) {
@@ -25,6 +23,7 @@ export default function SyncUserClient() {
     }
   }, [isSignedIn, user, setWishlist, clearWishlist, wishlistItemsIds]);
 
+  // for user
   useEffect(() => {
     if (!isLoaded) return;
 
@@ -37,5 +36,5 @@ export default function SyncUserClient() {
     syncAll();
   }, [isSignedIn, isLoaded, user]);
 
-  return null;
+  return <CartSync />;
 }

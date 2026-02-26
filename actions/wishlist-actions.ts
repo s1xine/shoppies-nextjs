@@ -5,7 +5,7 @@ import { wishlistTable } from "@/schema";
 import { eq } from "drizzle-orm";
 import { checkDbUser } from "./users-actions";
 import { getUserWishlist } from "@/lib/db/queries/user-queries";
-import { Product } from "@/types/product";
+import { WishlistItem } from "@/types/wishlist";
 
 export async function toggleWishlistItemDB(productId: number) {
   const dbUser = await checkDbUser();
@@ -66,7 +66,7 @@ export async function getWishlistIds() {
   return rows.map((r) => r.productId);
 }
 
-export async function fetchWishlistProducts(): Promise<Product[]> {
+export async function fetchWishlistProducts(): Promise<WishlistItem[]> {
   const dbUser = await checkDbUser();
   if (!dbUser) return [];
 
