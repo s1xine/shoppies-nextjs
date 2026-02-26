@@ -24,10 +24,8 @@ export function useCartInit() {
       if (!isSignedIn) return [];
 
       const items = await fetchCartProducts();
-      if (items && items.length > 0) {
-        // Hydrate local Zustand store with DB truth
-        setCart(items);
-      }
+      // Hydrate local Zustand store with DB truth (even if empty)
+      setCart(items, true);
       return items;
     },
     enabled: !!isSignedIn, // Only run if signed in
