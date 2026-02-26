@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchWishlistProducts } from "@/actions/wihslist-actions";
+import { fetchWishlistProducts } from "@/actions/wishlist-actions";
 import { useWishlistStore } from "@/store/wishlistStore";
 import { Product } from "@/types/product";
 import { useQuery } from "@tanstack/react-query";
