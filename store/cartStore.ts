@@ -4,7 +4,8 @@ import { persist } from "zustand/middleware";
 
 type CartStore = {
   cartItems: CartItem[];
-  setCart: (items: CartItem[]) => void;
+  isHydratedFromDB: boolean;
+  setCart: (items: CartItem[], isHydrated?: boolean) => void;
   clearCart: () => void;
   addToCart: (item: CartItem) => void;
   removeFromCart: (id: number) => void;
@@ -16,10 +17,16 @@ export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       cartItems: [],
+      isHydratedFromDB: false,
 
-      setCart: (items) => set({ cartItems: items }),
+      setCart: (items, isHydrated) =>
+        set((state) => ({
+          cartItems: items,
+          isHydratedFromDB:
+            isHydrated !== undefined ? isHydrated : state.isHydratedFromDB,
+        })),
 
-      clearCart: () => set({ cartItems: [] }),
+      clearCart: () => set({ cartItems: [], isHydratedFromDB: false }),
 
       addToCart: (item) =>
         set((state) => {
@@ -64,7 +71,7 @@ export const useCartStore = create<CartStore>()(
       name: "cart-storage",
       partialize: (state) => ({
         cartItems: state.cartItems,
-        getCartCount: state.getCartCount,
+        isHydratedFromDB: state.isHydratedFromDB,
       }),
     },
   ),
