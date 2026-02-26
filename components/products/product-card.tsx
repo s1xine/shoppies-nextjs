@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Check, Heart, ShoppingCart } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
+import { useAddToCartMutation } from "@/lib/hooks/use-cart";
 import { useUser, useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Product } from "@/types/product";
@@ -10,10 +11,10 @@ import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 import currencyIndianRupee from "@/utils/currency";
 import { useWishlistStore } from "@/store/wishlistStore";
-import { useToggleWishlist } from "@/lib/hooks/use-toggle-wishlist";
+import { useToggleWishlist } from "@/lib/hooks/use-wishlist";
 
 const ProductCard = ({ product }: { product: Product }) => {
-  const addToCart = useCartStore((state) => state.addToCart);
+  const { mutateAsync: addToCart } = useAddToCartMutation();
   const cartItems = useCartStore((state) => state.cartItems);
   const wishlist = useWishlistStore((state) => state.wishlist);
 
@@ -29,14 +30,20 @@ const ProductCard = ({ product }: { product: Product }) => {
     addToCart({
       id: product.id,
       title: product.title,
-      image: product.images?.[0],
+      image: product.images[0],
       price: product.price,
       slug: product.slug,
       quantity: 1,
     });
   };
 
-  const useToggleWishlistMutation = useToggleWishlist(product);
+  const useToggleWishlistMutation = useToggleWishlist({
+    id: product.id,
+    title: product.title,
+    image: product.images[0],
+    price: product.price,
+    slug: product.slug,
+  });
 
   const handleAddToWishlist = () => {
     if (!isSignedIn) {

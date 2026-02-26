@@ -1,11 +1,41 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useWishlistStore } from "@/store/wishlistStore";
-import { toggleWishlistItemDB } from "@/actions/wishlist-actions";
-import type { Product } from "@/types/product";
+import {
+  getWishlistIds,
+  toggleWishlistItemDB,
+} from "@/actions/wishlist-actions";
+import { fetchWishlistProducts } from "@/actions/wishlist-actions";
+import { useQuery } from "@tanstack/react-query";
+import { WishlistItem } from "@/types/wishlist";
+
+// fetch user wishlist
+export function useGetWishlist() {
+  const setWishlistItems = useWishlistStore((state) => state.setWishlistItems);
+
+  return useQuery<WishlistItem[]>({
+    queryKey: ["wishlist"],
+    queryFn: async () => {
+      const wishlistedItems = await fetchWishlistProducts();
+      if (wishlistedItems) {
+        setWishlistItems(wishlistedItems);
+      }
+
+      return wishlistedItems;
+    },
+  });
+}
+
+// fetch user wishlist ids
+export function useGetWishlistIds() {
+  return useQuery<number[]>({
+    queryKey: ["wishlistItemsIds"],
+    queryFn: getWishlistIds,
+  });
+}
 
 // Accept the full product so we can optimistically add/remove
-export function useToggleWishlist(product: Product) {
+export function useToggleWishlist(product: WishlistItem) {
   const queryClient = useQueryClient();
   const toggleWishlistItem = useWishlistStore((s) => s.toggleWishlistItem);
   const setWishlistItems = useWishlistStore((s) => s.setWishlistItems);
@@ -18,7 +48,7 @@ export function useToggleWishlist(product: Product) {
       await queryClient.cancelQueries({ queryKey: ["wishlist"] });
 
       const prevProducts =
-        queryClient.getQueryData<Product[]>(["wishlist"]) ?? [];
+        queryClient.getQueryData<WishlistItem[]>(["wishlist"]) ?? [];
 
       const exists = prevProducts.some((p) => p.id === product.id);
       const nextProducts = exists
@@ -32,7 +62,7 @@ export function useToggleWishlist(product: Product) {
       toggleWishlistItem(product.id);
 
       // 3) Keep React Query cache in sync
-      queryClient.setQueryData<Product[]>(["wishlist"], nextProducts);
+      queryClient.setQueryData<WishlistItem[]>(["wishlist"], nextProducts);
 
       return { prevProducts };
     },

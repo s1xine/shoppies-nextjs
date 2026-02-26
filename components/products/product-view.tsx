@@ -7,7 +7,7 @@ import currencyIndianRupee from "@/utils/currency";
 import StarRating from "../star-rating";
 
 import ProductImageCarousel from "./product-image-carousel";
-import { useCartStore } from "@/store/cartStore";
+import { useAddToCartMutation } from "@/lib/hooks/use-cart";
 
 interface ModalProps {
   product: Product;
@@ -15,7 +15,7 @@ interface ModalProps {
 }
 
 const ProductView = ({ product, isModal = false }: ModalProps) => {
-  const addToCart = useCartStore((state) => state.addToCart);
+  const { mutateAsync: addToCart } = useAddToCartMutation();
 
   // Add to cart
   const handleAddToCart = async () => {

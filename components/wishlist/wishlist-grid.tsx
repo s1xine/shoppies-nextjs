@@ -6,13 +6,13 @@ import WishlistCard from "./wishlist-card";
 import WishlistGridSkeleton from "./wishlist-grid-skeleton";
 import { toast } from "sonner";
 import { useWishlistStore } from "@/store/wishlistStore";
-import { useGetWishlist } from "@/lib/hooks/use-get-wishlist";
+import { useGetWishlist } from "@/lib/hooks/use-wishlist";
 
 export default function WishlistGrid() {
   const router = useRouter();
   const wishlistItems = useWishlistStore((state) => state.wishlistItems);
 
-  const { data, isLoading, isError, error } = useGetWishlist();
+  const { isLoading, isError, error } = useGetWishlist();
 
   if (isLoading) {
     return <WishlistGridSkeleton />;
@@ -22,9 +22,9 @@ export default function WishlistGrid() {
     toast.error(error.message);
   }
 
-  if (wishlistItems.length === 0) {
-    return (
-      <section className="pb-32 pt-6 max-w-7xl mx-auto px-6">
+  return (
+    <section className="pb-32 pt-6 max-w-7xl mx-auto px-6">
+      {wishlistItems.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 text-center">
           <HeartCrack className="w-16 h-16 mb-6" />
 
@@ -41,17 +41,13 @@ export default function WishlistGrid() {
             Explore Products
           </Button>
         </div>
-      </section>
-    );
-  }
-
-  return (
-    <section className="pb-32 pt-6 max-w-7xl mx-auto px-6">
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {wishlistItems.map((product) => (
-          <WishlistCard key={product.id} product={product} />
-        ))}
-      </div>
+      ) : (
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {wishlistItems.map((product) => (
+            <WishlistCard key={product.id} product={product} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card";
 import { Trash2, Plus, Minus } from "lucide-react";
 import Image from "next/image";
-import { useCartStore } from "@/store/cartStore";
+import { useRemoveFromCartMutation, useUpdateCartQuantityMutation } from "@/lib/hooks/use-cart";
 import { CartItem } from "@/types/cart";
 import { Button } from "../ui/button";
 import currencyIndianRupee from "@/utils/currency";
@@ -11,15 +11,15 @@ import { useRouter } from "next/navigation";
 
 const CartItemCard = ({ item }: { item: CartItem }) => {
   const router = useRouter();
-  const removeFromCart = useCartStore((s) => s.removeFromCart);
-  const updateQuantity = useCartStore((s) => s.updateQuantity);
+  const { mutate: removeFromCart } = useRemoveFromCartMutation();
+  const { mutate: updateQuantity } = useUpdateCartQuantityMutation();
 
   const increaseQuantity = () => {
-    updateQuantity(item.id, item.quantity + 1);
+    updateQuantity({ id: item.id, quantity: item.quantity + 1 });
   };
 
   const decreaseQuantity = () => {
-    updateQuantity(item.id, item.quantity - 1);
+    updateQuantity({ id: item.id, quantity: item.quantity - 1 });
   };
 
   return (

@@ -16,14 +16,14 @@ import { Product } from "@/types/product";
 import { useRef, useState, useEffect } from "react";
 import currencyIndianRupee from "@/utils/currency";
 import { useRouter } from "next/navigation";
-import { useCartStore } from "@/store/cartStore";
+import { useAddToCartMutation } from "@/lib/hooks/use-cart";
 
 export default function HeroCarousel({
   heroProducts,
 }: {
   heroProducts: Product[];
 }) {
-  const addToCart = useCartStore((state) => state.addToCart);
+  const { mutateAsync: addToCart } = useAddToCartMutation();
 
   const router = useRouter();
 

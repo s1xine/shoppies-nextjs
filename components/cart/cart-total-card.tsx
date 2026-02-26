@@ -1,8 +1,13 @@
 import { Card } from "@/components/ui/card";
 import { Lock } from "lucide-react";
 import { Button } from "../ui/button";
+import { CartItem } from "@/types/cart";
 
-const CartTotalCard = ({ subtotal }: { subtotal: number }) => {
+const CartTotalCard = ({ cartItems }: { cartItems: CartItem[] }) => {
+  // ✅ compute subtotal from snapshot data
+  const subtotal = cartItems.reduce((total, item) => {
+    return total + (item.price ?? 0) * item.quantity;
+  }, 0);
   return (
     <Card className="sticky top-28 rounded-3xl border bg-white/50 dark:bg-zinc-900/50 backdrop-blur-2xl shadow-xl">
       <div className="p-8 space-y-6">

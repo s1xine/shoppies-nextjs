@@ -1,12 +1,12 @@
-import { Product } from "@/types/product";
+import { WishlistItem } from "@/types/wishlist";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type WishlistStore = {
   wishlist: number[];
-  wishlistItems: Product[];
+  wishlistItems: WishlistItem[];
   setWishlist: (ids: number[]) => void;
-  setWishlistItems: (items: Product[]) => void;
+  setWishlistItems: (items: WishlistItem[]) => void;
   toggleWishlistItem: (id: number) => void;
   removeWishlistItem: (id: number) => void;
   clearWishlist: () => void;
