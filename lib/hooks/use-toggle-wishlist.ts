@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useWishlistStore } from "@/store/wishlistStore";
-import { toggleWishlistItemDB } from "@/actions/wihslist-actions";
+import { toggleWishlistItemDB } from "@/actions/wishlist-actions";
 import type { Product } from "@/types/product";
 
 // Accept the full product so we can optimistically add/remove

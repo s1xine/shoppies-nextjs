@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { syncAuthUser } from "@/actions/users-actions";
 import { useWishlistStore } from "@/store/wishlistStore";
-import { getWishlistIds } from "@/actions/wihslist-actions";
+import { getWishlistIds } from "@/actions/wishlist-actions";
 import { useQuery } from "@tanstack/react-query";
 
 export default function SyncUserClient() {
