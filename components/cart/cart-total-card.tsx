@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Lock } from "lucide-react";
 import { Button } from "../ui/button";
 import { CartItem } from "@/types/cart";
+import CashfreePayButton from "../CashFreePayButton";
 
 const CartTotalCard = ({ cartItems }: { cartItems: CartItem[] }) => {
   // ✅ compute subtotal from snapshot data
@@ -33,10 +34,7 @@ const CartTotalCard = ({ cartItems }: { cartItems: CartItem[] }) => {
         </div>
 
         {/* checkout button */}
-        <Button className="w-full h-14 rounded-2xl text-base font-semibold bg-linear-to-r from-black to-zinc-800 dark:from-purple-600 dark:to-violet-600 dark:text-white hover:opacity-90 transition">
-          <Lock className="mr-2 h-4 w-4" />
-          Secure Checkout
-        </Button>
+        <CashfreePayButton amount={subtotal} />
 
         <p className="text-xs text-muted-foreground text-center">
           Payments are secure & encrypted
