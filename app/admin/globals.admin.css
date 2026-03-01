@@ -1,0 +1,157 @@
+/* Admin Panel Theme — Node.js Green Accent */
+
+/* 
+  Node.js brand green: #3C873A → oklch(0.58 0.17 142)
+  Lighter variant:     #68A063 → oklch(0.67 0.14 142)
+*/
+
+/* Define variables on body when admin panel is present so Portals can inherit them */
+body:has(.admin-panel) {
+  /* ── Light mode ── */
+  --admin-primary: oklch(0.55 0.18 145);
+  --admin-primary-foreground: oklch(1 0 0);
+  --admin-primary-hover: oklch(0.50 0.18 145);
+  
+  --admin-accent: oklch(0.55 0.18 145);
+  --admin-accent-foreground: oklch(1 0 0);
+
+  --admin-bg: oklch(0.98 0.005 240);
+  --admin-fg: oklch(0.15 0 0);
+  --admin-card: oklch(1 0 0);
+  --admin-card-foreground: oklch(0.15 0 0);
+  --admin-muted: oklch(0.96 0.01 240);
+  --admin-muted-foreground: oklch(0.45 0 0);
+  --admin-border: oklch(0.91 0.01 240);
+  --admin-input: oklch(0.91 0.01 240);
+  --admin-ring: oklch(0.55 0.18 145);
+
+  --admin-sidebar-bg: oklch(1 0 0);
+  --admin-sidebar-fg: oklch(0.15 0 0);
+  --admin-sidebar-accent: oklch(0.55 0.18 145 / 8%);
+  --admin-sidebar-accent-fg: oklch(0.55 0.18 145);
+  --admin-sidebar-border: oklch(0.91 0.01 240);
+
+  --admin-chart-1: oklch(0.55 0.18 145);
+  --admin-chart-2: oklch(0.65 0.14 155);
+  --admin-chart-3: oklch(0.45 0.12 160);
+  --admin-chart-4: oklch(0.70 0.10 130);
+  --admin-chart-5: oklch(0.75 0.15 135);
+
+  /* Override Shadcn Globals for Admin */
+  --background: var(--admin-bg);
+  --foreground: var(--admin-fg);
+  --card: var(--admin-card);
+  --card-foreground: var(--admin-card-foreground);
+  --popover: var(--admin-card);
+  --popover-foreground: var(--admin-card-foreground);
+  --primary: var(--admin-primary);
+  --primary-foreground: var(--admin-primary-foreground);
+  --secondary: var(--admin-muted);
+  --secondary-foreground: var(--admin-fg);
+  --muted: var(--admin-muted);
+  --muted-foreground: var(--admin-muted-foreground);
+  --accent: var(--admin-sidebar-accent);
+  --accent-foreground: var(--admin-sidebar-accent-fg);
+  --border: var(--admin-border);
+  --input: var(--admin-input);
+  --ring: var(--admin-ring);
+  --radius: 0.75rem;
+}
+
+/* Dark mode variables */
+.dark body:has(.admin-panel),
+body.dark:has(.admin-panel) {
+  --admin-primary: oklch(0.65 0.18 145);
+  --admin-primary-foreground: oklch(0.10 0 0);
+  --admin-primary-hover: oklch(0.70 0.18 145);
+
+  --admin-accent: oklch(0.65 0.18 145);
+  --admin-accent-foreground: oklch(0.10 0 0);
+
+  --admin-bg: oklch(0.12 0.01 240);
+  --admin-fg: oklch(0.98 0 0);
+  --admin-card: oklch(0.16 0.01 240);
+  --admin-card-foreground: oklch(0.95 0 0);
+  --admin-muted: oklch(0.20 0.01 240);
+  --admin-muted-foreground: oklch(0.60 0 0);
+  --admin-border: oklch(0.24 0.01 240);
+  --admin-input: oklch(0.24 0.01 240);
+  --admin-ring: oklch(0.65 0.18 145);
+
+  --admin-sidebar-bg: oklch(0.14 0.01 240);
+  --admin-sidebar-fg: oklch(0.95 0 0);
+  --admin-sidebar-accent: oklch(0.65 0.18 145 / 12%);
+  --admin-sidebar-accent-fg: oklch(0.65 0.18 145);
+  --admin-sidebar-border: oklch(0.22 0.01 240);
+}
+
+/* Admin Gradient Utility */
+.admin-panel .admin-gradient,
+body:has(.admin-panel) .admin-gradient {
+  background: linear-gradient(135deg, oklch(0.55 0.18 145), oklch(0.65 0.14 155));
+}
+
+.dark body:has(.admin-panel) .admin-gradient {
+  background: linear-gradient(135deg, oklch(0.45 0.16 145), oklch(0.55 0.14 155));
+}
+
+/* ─── Premium Dialog Styling ─── */
+body:has(.admin-panel) [data-slot="dialog-overlay"] {
+  background-color: oklch(0 0 0 / 60%);
+  backdrop-filter: blur(8px);
+}
+
+body:has(.admin-panel) [data-slot="dialog-content"] {
+  background-color: var(--admin-card);
+  border: 1px solid var(--admin-border);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  padding: 1.75rem;
+  border-radius: 1rem;
+}
+
+/* Target specific properties for smooth transitions */
+.admin-panel, 
+body:has(.admin-panel) .stat-card,
+body:has(.admin-panel) button,
+body:has(.admin-panel) a {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Specific transition for sidebar width */
+aside.transition-all {
+  transition-property: width, min-width, max-width;
+}
+
+/* Modern Input Styling in Admin */
+body:has(.admin-panel) input,
+body:has(.admin-panel) textarea,
+body:has(.admin-panel) select {
+  background-color: var(--admin-muted) !important;
+  border: 1px solid var(--admin-border) !important;
+  border-radius: 0.5rem !important;
+  padding: 0.6rem 0.8rem !important;
+  color: var(--admin-fg) !important;
+}
+
+body:has(.admin-panel) input:focus,
+body:has(.admin-panel) textarea:focus {
+  border-color: var(--admin-primary) !important;
+  box-shadow: 0 0 0 2px oklch(var(--admin-primary) / 10%) !important;
+  outline: none !important;
+}
+
+/* Stat Cards */
+.admin-panel .stat-card {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--admin-border);
+}
+
+.admin-panel .stat-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--admin-primary);
+  box-shadow: 0 12px 20px -8px oklch(0 0 0 / 15%);
+}
+
+.dark .admin-panel .stat-card:hover {
+  box-shadow: 0 12px 20px -8px oklch(0 0 0 / 40%);
+}
