@@ -35,7 +35,8 @@ export const ordersTable = pgTable("orders", {
 
   totalAmount: integer("total_amount").default(0).notNull(),
 
-  stripePaymentIntentId: varchar("stripe_payment_intent", { length: 255 }),
+  cashfreeOrderId: varchar("cashfree_order_id", { length: 255 }),
+  paymentSessionId: varchar("payment_session_id", { length: 255 }),
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });

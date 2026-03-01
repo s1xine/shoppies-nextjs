@@ -11,7 +11,7 @@ export const usersTable = pgTable("users", {
 
   imageUrl: text("image_url"),
 
-  stripeCustomerId: varchar("stripe_customer_id", { length: 255 }),
+  phone: varchar("phone", { length: 20 }),
 
   role: varchar("role", { length: 50 }).default("user").notNull(),
 
