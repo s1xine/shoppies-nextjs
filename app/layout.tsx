@@ -4,8 +4,6 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { ClerkProvider } from "@clerk/nextjs";
-import { shadcn } from "@clerk/themes";
 import QueryProvider from "@/providers/query-providers";
 import { Suspense } from "react";
 
@@ -34,25 +32,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Suspense>
-      <ClerkProvider
-        appearance={{
-          theme: shadcn,
-        }}
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <html lang="en" suppressHydrationWarning>
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          >
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <TooltipProvider>
-                <QueryProvider>{children}</QueryProvider>
-                <Toaster />
-              </TooltipProvider>
-            </ThemeProvider>
-          </body>
-        </html>
-      </ClerkProvider>
-    </Suspense>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <TooltipProvider>
+            <Suspense>
+              <QueryProvider>{children}</QueryProvider>
+            </Suspense>
+
+            <Toaster />
+          </TooltipProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

@@ -20,6 +20,8 @@ export const productsTable = pgTable("products", {
   reviewCount: integer("review_count").default(0),
   isBestSeller: boolean("is_best_seller").default(false),
   isNew: boolean("is_new").default(false),
+  isActive: boolean("is_active").default(true),
+  inStock: boolean("in_stock").default(true),
   categoryId: integer("category_id")
     .references(() => categoriesTable.id)
     .notNull(),

@@ -57,6 +57,10 @@ const MobileMenu = ({
           ))}
 
           <div className="border-t pt-4 flex flex-col gap-4">
+            <Link href="/cart" onClick={() => setMobileOpen(false)}>
+              Cart
+            </Link>
+
             <ThemeToggle />
 
             <SignedOut>
@@ -73,11 +77,6 @@ const MobileMenu = ({
               <Link href="/wishlist" onClick={() => setMobileOpen(false)}>
                 Wishlist
               </Link>
-
-              <Link href="/cart" onClick={() => setMobileOpen(false)}>
-                Cart
-              </Link>
-
               {/* <UserButton showName={true} /> */}
             </SignedIn>
           </div>

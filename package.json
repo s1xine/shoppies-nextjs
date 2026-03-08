@@ -12,6 +12,7 @@
     "@clerk/nextjs": "^6.37.3",
     "@clerk/themes": "^2.4.52",
     "@neondatabase/serverless": "^1.0.2",
+    "@tanstack/query-broadcast-client-experimental": "^5.90.20",
     "@tanstack/react-query": "^5.90.21",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
