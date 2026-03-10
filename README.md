@@ -4,12 +4,10 @@
 ![Bun](https://img.shields.io/badge/Runtime-Bun-orange)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue)
 ![Drizzle](https://img.shields.io/badge/ORM-Drizzle-green)
-![Stripe](https://img.shields.io/badge/Payments-Stripe-purple)
-![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
 A modern full-stack e-commerce application built with **Next.js (App Router)** and powered by **Bun**.
 
-Shoppies demonstrates a scalable architecture for production-ready online stores with authentication, optimistic UI cart updates, Stripe payments, and a structured relational database.
+Shoppies demonstrates a scalable architecture for production-ready online stores with authentication, optimistic UI cart updates, Cashfree payments, and a structured relational database.
 
 ---
 
@@ -21,7 +19,7 @@ Shoppies demonstrates a scalable architecture for production-ready online stores
 - **Database:** PostgreSQL
 - **ORM:** Drizzle ORM
 - **Authentication:** Clerk
-- **Payments:** Stripe
+- **Payments:** Cashfree
 - **State Management:** Zustand
 - **Data Fetching:** React Query
 - **Styling:** Tailwind CSS
@@ -35,7 +33,7 @@ Shoppies demonstrates a scalable architecture for production-ready online stores
 - 🛒 Persistent cart system
 - ⚡ Optimistic cart updates
 - 🔐 Authentication (Clerk)
-- 💳 Stripe payment integration
+- 💳 Cashfree payment integration
 - 📦 Order management system
 - 🗂️ Structured database schema
 - 🧠 Server + Client Components architecture
@@ -58,10 +56,18 @@ Create .env:
 
 ```
 DATABASE_URL=
-CLERK_SECRET_KEY=
+NEXT_PUBLIC_APP_URL=http://localhost:3000/
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-STRIPE_SECRET_KEY=
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=admin123
+
+CASHFREE_CLIENT_ID=
+CASHFREE_CLIENT_SECRET=
+CASHFREE_API_ENV=
+NEXT_PUBLIC_CASHFREE_ENV=
 ```
 Run Dev Server
 
